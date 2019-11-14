@@ -5,6 +5,7 @@ using System.Linq;
 
 namespace CST.Common.Utils.ServiceStatusFeature
 {
+    [ApiController, Route("api/[controller]")]
     internal class ServiceStatusController : ControllerBase
     {
         private readonly IEnumerable<IServiceStatusSource> serviceStatusSources;
