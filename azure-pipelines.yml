@@ -18,12 +18,14 @@ steps:
 - task: NuGetToolInstaller@1
 
 - task: DotNetCoreCLI@2
+  displayName: 'Build all projects'
   inputs:
     command: 'build'
     configuration: Release
     projects: '**/*.csproj'
     workingDirectory: '$(System.DefaultWorkingDirectory)'
 - task: NuGetCommand@2
+  displayName: 'Pack all projects into nuget'
   inputs:
     command: 'pack'
     packagesToPack: '**/*.csproj'
@@ -31,6 +33,7 @@ steps:
     includeReferencedProjects: true
     packDestination: '$(Build.ArtifactStagingDirectory)'
 - task: NuGetCommand@2
+  displayName: 'Push packages to libs feed'
   inputs:
     command: 'push'
     packagesToPush: '$(Build.ArtifactStagingDirectory)/**/*.nupkg;!$(Build.ArtifactStagingDirectory)/**/*.symbols.nupkg'
