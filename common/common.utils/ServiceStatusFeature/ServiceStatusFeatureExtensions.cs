@@ -1,11 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc.ApplicationParts;
 using Microsoft.Extensions.DependencyInjection;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
-namespace common.utils.ServiceStatusFeature
+namespace CST.Common.Utils.ServiceStatusFeature
 {
     internal static class ServiceStatusFeatureExtensions
     {

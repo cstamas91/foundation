@@ -1,7 +1,7 @@
-﻿using common.utils.ServiceStatusFeature;
+﻿using CST.Common.Utils.ServiceStatusFeature;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace common.utils
+namespace CST.Common.Utils
 {
     public static class ServiceCollectionExtensions
     {

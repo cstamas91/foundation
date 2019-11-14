@@ -1,12 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc.ApplicationParts;
 using Microsoft.AspNetCore.Mvc.Controllers;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
 
-namespace common.utils.ServiceStatusFeature
+namespace CST.Common.Utils.ServiceStatusFeature
 {
     internal class ServiceStatusControllerFeatureProvider : IApplicationFeatureProvider<ControllerFeature>
     {
