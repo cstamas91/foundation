@@ -30,9 +30,10 @@ steps:
   inputs:
     command: 'pack'
     packagesToPack: '**/*.csproj'
-    versioningScheme: 'off'
-    includeReferencedProjects: true
-    packDestination: '$(Build.ArtifactStagingDirectory)'
+    versioningScheme: 'byPrereleaseNumber'
+    majorVersion: '1'
+    minorVersion: '0'
+    patchVersion: '0'
 - task: DotNetCoreCLI@2
   displayName: 'Push packages to libs feed'
   inputs:
