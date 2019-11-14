@@ -20,7 +20,7 @@ steps:
 - task: DotNetCoreCLI@2
   inputs:
     command: 'build'
-    configuration: 'Release'
+    configuration: Release
     projects: '**/*.csproj'
     workingDirectory: '$(System.DefaultWorkingDirectory)'
 - task: NuGetCommand@2
