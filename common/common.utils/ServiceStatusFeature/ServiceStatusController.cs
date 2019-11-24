@@ -18,7 +18,7 @@ namespace CST.Common.Utils.ServiceStatusFeature
         [HttpGet]
         public string Get()
         {
-            static string aggregator(string state, IServiceStatusSource current)
+            string aggregator(string state, IServiceStatusSource current)
             {
                 return string.Join(Environment.NewLine, state, current.GetStatus());
             }

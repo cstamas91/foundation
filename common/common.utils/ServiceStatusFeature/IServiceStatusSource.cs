@@ -2,6 +2,6 @@
 {
     public interface IServiceStatusSource
     {
-        public string GetStatus();
+        string GetStatus();
     }
 }
