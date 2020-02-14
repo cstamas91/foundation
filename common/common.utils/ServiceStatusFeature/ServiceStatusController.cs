@@ -8,22 +8,22 @@ namespace CST.Common.Utils.ServiceStatusFeature
     [ApiController, Route("api/[controller]")]
     internal class ServiceStatusController : ControllerBase
     {
-        private readonly IEnumerable<IServiceStatusSource> serviceStatusSources;
+        private readonly IEnumerable<IServiceStatusSource> _serviceStatusSources;
 
         public ServiceStatusController(IEnumerable<IServiceStatusSource> serviceStatusSources)
         {
-            this.serviceStatusSources = serviceStatusSources;
+            this._serviceStatusSources = serviceStatusSources;
         }
 
         [HttpGet]
         public string Get()
         {
-            string aggregator(string state, IServiceStatusSource current)
+            string Aggregator(string state, IServiceStatusSource current)
             {
                 return string.Join(Environment.NewLine, state, current.GetStatus());
             }
 
-            return serviceStatusSources.Aggregate(string.Empty, aggregator);
+            return _serviceStatusSources.Aggregate(string.Empty, Aggregator);
         }
     }
 }

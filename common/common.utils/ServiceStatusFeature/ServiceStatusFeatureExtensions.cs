@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Linq;
+using System.Reflection;
 
 namespace CST.Common.Utils.ServiceStatusFeature
 {
@@ -12,9 +13,13 @@ namespace CST.Common.Utils.ServiceStatusFeature
             var partManager = services.AddMvcCore()
                 .PartManager;
 
+            bool ImplementationSelector(TypeInfo t) => 
+                t.ImplementedInterfaces.Contains(typeof(IServiceStatusSource));
+
             var serviceStatusSources = partManager.ApplicationParts
                 .OfType<IApplicationPartTypeProvider>()
-                .SelectMany(p => p.Types.Where(t => t.ImplementedInterfaces.Contains(typeof(IServiceStatusSource))));
+                .SelectMany(p => p.Types.Where(ImplementationSelector));
+            
             foreach (var source in serviceStatusSources)
                 services.AddScoped(typeof(IServiceStatusSource), source);
 
