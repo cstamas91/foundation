@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\CST.StateMachineTest.Ticketing\CST.StateMachineTest.Ticketing.csproj" />
+      <ProjectReference Include="..\CST.StateMachineTest\CST.StateMachineTest.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="NSwag.AspNetCore" Version="13.2.3" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Controllers" />
+    </ItemGroup>
+
+
+</Project>
