@@ -6,7 +6,6 @@
 
     <ItemGroup>
       <ProjectReference Include="..\CST.StateMachineTest.Ticketing\CST.StateMachineTest.Ticketing.csproj" />
-      <ProjectReference Include="..\CST.StateMachineTest\CST.StateMachineTest.csproj" />
     </ItemGroup>
 
     <ItemGroup>
