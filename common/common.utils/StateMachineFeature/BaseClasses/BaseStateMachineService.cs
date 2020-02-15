@@ -1,73 +1,62 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using CST.Common.Utils.StateMachineFeature.Abstraction;
 using CST.Common.Utils.StateMachineFeature.Exceptions;
 
 namespace CST.Common.Utils.StateMachineFeature.BaseClasses
 {
-    public abstract class BaseStateMachineService<TGraphEnum, 
-                                                  TVertexEnum,
-                                                  TSubject, 
-                                                  TVertex, 
-                                                  TSubjectState, 
-                                                  TEdge, 
-                                                  TKey>
+    public abstract class BaseStateMachineService<TKey, TGraphEnum, TVertexEnum, TSubject, TRepository>
+        where TKey : struct, IEquatable<TKey>
         where TGraphEnum : struct, IConvertible
         where TVertexEnum : struct, IConvertible
-        where TSubject : ISubject<TGraphEnum, TVertexEnum, TSubject, TSubjectState, TVertex, TEdge, TKey>, new()
-        where TSubjectState : ISubjectState<TGraphEnum, TVertexEnum, TSubject, TSubjectState, TVertex, TEdge, TKey>, new()
-        where TVertex : IVertex<TGraphEnum, TVertexEnum, TEdge, TKey, TVertex>
-        where TEdge : IEdge<TGraphEnum, TVertexEnum, TKey, TVertex, TEdge>
-        where TKey : IEquatable<TKey>
+        where TSubject : StateMachineSubject<TKey, TGraphEnum, TVertexEnum, TSubject>, new()
+        where TRepository : BaseStateMachineRepository<TKey, TGraphEnum, TVertexEnum, TSubject>
     {
-        private readonly BaseStateMachineRepository<TGraphEnum, 
-                                                    TVertexEnum, 
-                                                    TSubject, 
-                                                    TSubjectState, 
-                                                    TVertex, 
-                                                    TEdge,
-                                                    TKey> _repository;
-        
-        protected BaseStateMachineService(BaseStateMachineRepository<TGraphEnum, 
-                                                                     TVertexEnum, 
-                                                                     TSubject, 
-                                                                     TSubjectState, 
-                                                                     TVertex, 
-                                                                     TEdge, 
-                                                                     TKey> repository)
+        // ReSharper disable once MemberCanBePrivate.Global
+        protected readonly TRepository Repository;
+
+        protected BaseStateMachineService(TRepository repository)
         {
-            _repository = repository;
+            Repository = repository;
         }
-        
+
         // ReSharper disable once MemberCanBeProtected.Global
         public abstract TGraphEnum Graph { get; }
         protected abstract void PreInitializeSubject(TSubject subject);
         protected abstract void PostInitializeSubject(TSubject subject);
-        protected abstract void PostInitializeSubjectState(TSubjectState subjectState);
+
+        protected abstract void PostInitializeSubjectState(
+            StateMachineSubjectMoment<TKey, TGraphEnum, TVertexEnum, TSubject> subjectState);
 
         public TSubject InitializeSubject()
         {
-            var rootVertex = _repository.GetRootVertex();
+            var rootVertex = Repository.GetRootVertex();
             if (rootVertex == null)
             {
                 throw new NoTrivialRootVertexExists<TGraphEnum>(Graph);
             }
+
             return InitializeSubject(rootVertex.VertexEnum);
         }
-        
+
         // ReSharper disable once MemberCanBePrivate.Global
         public TSubject InitializeSubject(TVertexEnum initialVertexEnum)
         {
             return InitializeSubject(new TSubject(), initialVertexEnum);
         }
+
         // ReSharper disable once MemberCanBePrivate.Global
         public TSubject InitializeSubject(TSubject subject, TVertexEnum initialVertexEnum)
         {
             PreInitializeSubject(subject);
-            var initialVertex = _repository.GetVertex(initialVertexEnum);
-            subject.CurrentSubjectState = new TSubjectState {Subject = subject, Vertex = initialVertex};
-            _repository.AddSubjectState(subject.CurrentSubjectState);
+            var initialVertex = Repository.GetVertex(initialVertexEnum);
+            subject.CurrentSubjectState =
+                new StateMachineSubjectMoment<TKey, TGraphEnum, TVertexEnum, TSubject>
+                {
+                    Subject = subject,
+                    Vertex = initialVertex
+                };
+            Repository.AddSubjectMoment(subject.CurrentSubjectState);
             PostInitializeSubject(subject);
             PostInitializeSubjectState(subject.CurrentSubjectState);
             return subject;
@@ -75,15 +64,22 @@ namespace CST.Common.Utils.StateMachineFeature.BaseClasses
 
         protected abstract void PreStepSubject(TSubject subject, TKey edgeId);
         protected abstract void PostStepSubject(TSubject subject, TKey edgeId);
-        protected abstract void PostStepSubjectState(TSubjectState subjectState);
+        protected abstract void PostStepSubjectState(
+            StateMachineSubjectMoment<TKey, TGraphEnum, TVertexEnum, TSubject> subjectState);
+
         // ReSharper disable once MemberCanBePrivate.Global
         public TSubject StepSubject(TSubject subject, TKey edgeId)
         {
             PreStepSubject(subject, edgeId);
             var currentVertex = subject.CurrentSubjectState.Vertex;
             var edge = EnsureEdge(currentVertex, edgeId);
-            subject.CurrentSubjectState = new TSubjectState{Subject = subject, Vertex = edge.Head};
-            _repository.AddSubjectState(subject.CurrentSubjectState);
+            subject.CurrentSubjectState =
+                new StateMachineSubjectMoment<TKey, TGraphEnum, TVertexEnum, TSubject>
+                {
+                    Subject = subject, 
+                    Vertex = edge.Head
+                };
+            Repository.AddSubjectMoment(subject.CurrentSubjectState);
             PostStepSubject(subject, edgeId);
             PostStepSubjectState(subject.CurrentSubjectState);
             return subject;
@@ -106,17 +102,19 @@ namespace CST.Common.Utils.StateMachineFeature.BaseClasses
             return StepSubject(subject, edgeIds[0]);
         }
 
-        private TEdge EnsureEdge(TVertex vertex, TKey edgeId)
+        private Edge<TKey, TGraphEnum, TVertexEnum> EnsureEdge(
+            Vertex<TKey, TGraphEnum, TVertexEnum> vertex, 
+            TKey edgeId)
         {
             var resultEdge = vertex.OutEdges.FirstOrDefault(edge => edge.Id.Equals(edgeId));
             if (resultEdge != null) return resultEdge;
-            
-            var erroringEdge = _repository.GetEdge(edgeId);
+
+            var erroringEdge = Repository.GetEdge(edgeId);
             if (erroringEdge == null)
             {
                 throw new EdgeDoesNotExistException<TKey, TVertexEnum>(edgeId);
             }
-                
+
             throw new VertexNotConnectedToEdgeException(vertex.Name, erroringEdge.Name);
         }
     }
