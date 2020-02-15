@@ -15,19 +15,19 @@ namespace CST.Common.Utils.StateMachineFeature
             _stateMachineMetaService = stateMachineMetaService;
         }
         
-        [HttpGet]
+        [HttpGet("states")]
         public IActionResult GetStates()
         {
             return Ok(_stateMachineMetaService.GetStates());
         }
 
-        [HttpGet]
+        [HttpGet("transitions")]
         public IActionResult GetTransitions()
         {
             return Ok(_stateMachineMetaService.GetInitialTransitions());
         }
 
-        [HttpGet]
+        [HttpGet("transitions/{currentStateId}")]
         public IActionResult GetTransitions(TKey currentStateId)
         {
             return Ok(_stateMachineMetaService.GetTransitions(currentStateId));
