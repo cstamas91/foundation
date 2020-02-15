@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc.Controllers;
 
 namespace CST.Common.Utils.StateMachineFeature
 {
-    public class StateMachineFeatureProvider<TKey> : IApplicationFeatureProvider<ControllerFeature> 
+    internal class StateMachineFeatureProvider<TKey> : IApplicationFeatureProvider<ControllerFeature> 
         where TKey : struct, IEquatable<TKey>
     {
         public void PopulateFeature(IEnumerable<ApplicationPart> parts, ControllerFeature feature)
