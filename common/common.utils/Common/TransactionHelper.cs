@@ -6,25 +6,19 @@ namespace CST.Common.Utils.Common
 {
     public static class TransactionHelper
     {
-        public static Maybe<TOut> WithTransactionScope<TIn1, TIn2, TOut>(
-            Func<TIn1, TIn2, TOut> f, 
-            TIn1 param1, 
-            TIn2 param2,
-            ILogger logger = null)
+        public static void WithTransactionScope(Action f, ILogger logger = null)
         {
             try
             {
                 using var tran = new TransactionScope();
-                var result = f(param1, param2);
+                f();
                 tran.Complete();
-                return Maybe<TOut>.FromSuccess(result);
             }
-            catch (Exception e)
+            catch (Exception exception)
             {
-                logger?.LogError(e, string.Empty);
-                return Maybe<TOut>.FromException(e);
+                logger?.LogError(exception, string.Empty);
+                throw;
             }
         }
-
     }
 }
