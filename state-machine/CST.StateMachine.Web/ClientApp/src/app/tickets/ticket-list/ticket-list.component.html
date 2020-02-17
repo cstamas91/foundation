@@ -1,0 +1,11 @@
+<div>
+    <h1>Tickets</h1>
+    <div class="list-group">
+        <div *ngFor="let ticket of ticketList">
+            <a  class="list-group-item list-group-item-action"
+                [routerLink]="['/ticket', ticket.Id]">
+            {{ticket.Id}} - {{ticket.State}}
+        </a>
+        </div>
+    </div>
+</div>
