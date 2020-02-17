@@ -13,7 +13,6 @@ namespace CST.Common.Utils.StateMachineFeature
         {
             var builder = new StateMachineFeatureBuilder(services);
             buildAction(builder);
-            
             return services;
         }
     }
