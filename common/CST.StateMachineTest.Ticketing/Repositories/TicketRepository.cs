@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -18,20 +17,18 @@ namespace CST.StateMachineTest.Ticketing.Repositories
             _context = context;
         }
 
-        public Ticket GetById(int id)
-        {
-            return _context.Tickets
+        public Ticket GetById(int id) =>
+            _context.Tickets
                 .DefaultIncludes()
-                .FirstOrDefault(ticket => ticket.Id == id);
-        }
+                .FirstOrDefault(ticket => ticket.Id == id) ??
+            throw new Exception();
 
-        public IEnumerable<Ticket> GetList(Expression<Func<Ticket, bool>> filterExpression)
-        {
-            return _context.Tickets
+        public IEnumerable<Ticket> GetList(Expression<Func<Ticket, bool>> filterExpression) =>
+            _context.Tickets
                 .DefaultIncludes()
                 .Where(filterExpression)
-                .AsEnumerable();
-        }
+                .AsEnumerable() ??
+            throw new Exception();
         
         public Ticket Update(Ticket ticket)
         {

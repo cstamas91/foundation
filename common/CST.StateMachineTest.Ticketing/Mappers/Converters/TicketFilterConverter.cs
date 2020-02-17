@@ -15,17 +15,17 @@ namespace CST.StateMachineTest.Ticketing.Mappers.Converters
             Expression<Func<Ticket, bool>> destination, 
             ResolutionContext context)
         {
-            destination = (Ticket t) => true;
+            destination = (ticket) => true;
 
             if (!string.IsNullOrEmpty(source.Description))
             {
-                destination = destination.And(t => t.Description.Contains(source.Description));
+                destination = destination.And(ticket => ticket.Description.Contains(source.Description));
             }
 
             if (source.RelatedCommits != null && source.RelatedCommits.Length != 0)
             {
                 destination = destination.And(
-                    t => t.RelatedCommits.Any(c => source.RelatedCommits.Contains(c.Id)));
+                    ticket => ticket.RelatedCommits.Any(commit => source.RelatedCommits.Contains(commit.Id)));
             }
 
             return destination;

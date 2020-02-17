@@ -36,7 +36,8 @@ namespace CST.StateMachineTest.Ticketing
                     .WithVertexEnumType<TicketingEnum>()
                     .WithSubjectType<Ticket>()
                     .WithRepositoryType<TicketingRepository>()
-                    .WithStateMachineService<TicketingStateMachineService>();
+                    .WithStateMachineService<TicketingStateMachineService>()
+                    .Build();
             });
             services.AddAutoMapper(typeof(TicketingFeatureExtensions).Assembly);
 

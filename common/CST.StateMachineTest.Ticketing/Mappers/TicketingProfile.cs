@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using AutoMapper;
@@ -41,6 +42,9 @@ namespace CST.StateMachineTest.Ticketing.Mappers
 
             CreateMap<TicketFilter, Expression<Func<Ticket, bool>>>()
                 .ConvertUsing<TicketFilterConverter>();
+            
+            CreateMap<IEnumerable<Ticket>, IEnumerable<TicketDto>>()
+                .ConvertUsing<TicketListConverter>();
         }
     }
 }

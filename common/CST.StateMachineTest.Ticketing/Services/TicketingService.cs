@@ -11,14 +11,13 @@ using Microsoft.Extensions.Logging;
 
 namespace CST.StateMachineTest.Ticketing.Services
 {
-    
     public class TicketingService
     {
         private readonly TicketingStateMachineService _stateMachineService;
         private readonly TicketRepository _ticketRepository;
         private readonly ILogger<TicketingService> _logger;
         private readonly IMapper _mapper;
-        
+
         public TicketingService(
             TicketingStateMachineService stateMachineService,
             TicketRepository ticketRepository,
@@ -40,50 +39,38 @@ namespace CST.StateMachineTest.Ticketing.Services
         public IEnumerable<TicketDto> GetTickets(TicketFilter filter)
         {
             var filterExpression = _mapper.Map<TicketFilter, Expression<Func<Ticket, bool>>>(filter);
-            var ticketList = _ticketRepository.GetList(filterExpression);
-            foreach (var ticket in ticketList)
-            {
-                yield return _mapper.Map<TicketDto>(ticket);
-            }
+            var ticketEnumerable = _ticketRepository.GetList(filterExpression);
+            return _mapper.Map<IEnumerable<TicketDto>>(ticketEnumerable);
         }
-        
+
         public TicketDto CreateTicket(CreateTicketDto dto)
         {
-            var result = TransactionHelper.WithTransactionScope(
-                (t, e) => _stateMachineService.InitializeSubject(t, e),
-                _mapper.Map<Ticket>(dto),
-                TicketingEnum.Open,
+            var newTicket = _mapper.Map<Ticket>(dto);
+            TransactionHelper.WithTransactionScope(
+                () =>
+                {
+                    newTicket = _stateMachineService
+                        .InitializeSubject(newTicket, TicketingEnum.Open);
+                },
                 _logger);
-            
-            if (result.Success)
-            {
-                return _mapper.Map<TicketDto>(result.Result);    
-            }
-
-            throw result.Exception;
+            return _mapper.Map<TicketDto>(newTicket);
         }
 
         public TicketDto UpdateTicket(TicketDto dto, int? transitionId = null)
         {
-            var result = TransactionHelper.WithTransactionScope((d, id) =>
-            {
-                var result = _ticketRepository.GetById(d.Id);
-                result = _mapper.Map(dto, result);
-                _ticketRepository.Update(result);
-                if (id.HasValue)
+            Ticket updatedTicket = default;
+            TransactionHelper.WithTransactionScope(() =>
                 {
-                    result = _stateMachineService.StepSubject(result, id.Value);
-                }
+                    updatedTicket = _mapper.Map(dto, _ticketRepository.GetById(dto.Id));
+                    _ticketRepository.Update(updatedTicket);
+                    if (transitionId.HasValue)
+                    {
+                        updatedTicket = _stateMachineService.StepSubject(updatedTicket, transitionId.Value);
+                    }
+                },
+                _logger);
 
-                return result;
-            }, dto, transitionId, _logger);
-
-            if (result.Success)
-            {
-                return _mapper.Map<TicketDto>(result.Result);
-            }
-
-            throw result.Exception;
+            return _mapper.Map<TicketDto>(updatedTicket);
         }
     }
 }
