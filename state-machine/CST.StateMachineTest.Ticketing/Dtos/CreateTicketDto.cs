@@ -1,11 +1,8 @@
-﻿using System.Collections.Generic;
-using CST.StateMachineTest.Data;
-
-namespace CST.StateMachineTest.Services
+﻿namespace CST.StateMachineTest.Ticketing.Dtos
 {
     public class CreateTicketDto
     {
-        public int Id { get; set; }
         public string Description { get; set; }
+        public string Title { get; set; }
     }
 }

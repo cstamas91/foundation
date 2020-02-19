@@ -8,7 +8,7 @@ namespace CST.StateMachineTest.Ticketing.Dtos
 {
     public class TicketDto : CreateTicketDto
     {
-        public UpdateableItem<CommitDto>[] RelatedCommits { get; set; }
-        public string State { get; set; }
+        public int Id { get; set; }
+        public ChildCollection<CommitDto> RelatedCommits { get; set; }
     }
 }

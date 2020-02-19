@@ -13,14 +13,14 @@ namespace CST.StateMachineTest.Ticketing.Data
     using TicketVertex = Vertex<int, GraphEnum, TicketingEnum>;
     using TicketEdge = Edge<int, GraphEnum, TicketingEnum>;
 
-    public class DesignTimeHelper : IDesignTimeDbContextFactory<StateMachineContext> 
+    public class StateMachineContext : DbContext, IDesignTimeDbContextFactory<StateMachineContext>
     {
         public StateMachineContext CreateDbContext(string[] args)
         {
             var connectionStringBuilder = new SqlConnectionStringBuilder()
             {
                 InitialCatalog = "StateMachine",
-                DataSource = "(localdb)\\MSSQLLocalDB",
+                DataSource = @"(localdb)\MSSQLLocalDB",
                 IntegratedSecurity = true,
                 MultipleActiveResultSets = true
             };
@@ -28,10 +28,12 @@ namespace CST.StateMachineTest.Ticketing.Data
             optionsBuilder.UseSqlServer(connectionStringBuilder.ConnectionString);
             return new StateMachineContext(optionsBuilder.Options);
         }
-    }
-    
-    public class StateMachineContext : DbContext
-    {
+
+        public StateMachineContext()
+        {
+            
+        }
+
         public StateMachineContext(DbContextOptions<StateMachineContext> options) : base(options)
         {
         }

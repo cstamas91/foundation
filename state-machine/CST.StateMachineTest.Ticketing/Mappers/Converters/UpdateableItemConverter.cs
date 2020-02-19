@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System.Collections;
+using AutoMapper;
 using CST.Common.Utils.ViewModel;
 
 namespace CST.StateMachineTest.Ticketing.Mappers.Converters

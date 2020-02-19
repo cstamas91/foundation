@@ -4,12 +4,13 @@ using CST.StateMachineTest.Services;
 using CST.StateMachineTest.Ticketing.Dtos;
 using CST.StateMachineTest.Ticketing.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Abstractions;
 using Microsoft.Extensions.Logging;
 
 namespace CST.StateMachineTest.Ticketing.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class TicketingController : ControllerBase
     {
         private readonly ILogger<TicketingController> _logger;
@@ -23,16 +24,15 @@ namespace CST.StateMachineTest.Ticketing.Controllers
             _service = service;
         }
 
-        [HttpGet]
-        public CreateTicketDto Get()
-        {
-            return new CreateTicketDto();
-        }
+        [HttpGet("proxy")]
+        public CreateTicketDto Get() => new CreateTicketDto();
 
-        [HttpGet("{id}")]
-        public TicketDto Get([FromQuery] int id)
+        [HttpGet]
+        public IActionResult Get([FromQuery] TicketFilter filter)
         {
-            return _service.GetTicket(id);
+            return filter.Id.HasValue 
+                ? Ok(_service.GetTicket(filter.Id.Value)) 
+                : Ok(_service.GetTickets(filter));
         }
 
         [HttpPut]
@@ -45,12 +45,6 @@ namespace CST.StateMachineTest.Ticketing.Controllers
         public TicketDto Update([FromBody] TicketDto dto, [FromQuery] int? transitionId = default)
         {
             return _service.UpdateTicket(dto, transitionId);
-        }
-
-        [HttpPost("list")]
-        public IEnumerable<TicketDto> List([FromBody] TicketFilter filter)
-        {
-            return _service.GetTickets(filter);
         }
     }
 }

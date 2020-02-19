@@ -1,3 +1,4 @@
+using System.Text.Json;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -20,7 +21,13 @@ namespace CST.StateMachineTest.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.ConfigureTicketingFeature();
-            services.AddControllers();
+            services.AddControllers()
+                .AddJsonOptions(options =>
+                {
+                    options.JsonSerializerOptions.PropertyNameCaseInsensitive = false;
+                    options.JsonSerializerOptions.IgnoreNullValues = false;
+                    options.JsonSerializerOptions.PropertyNamingPolicy = null;
+                });
             services.AddSwaggerDocument();
         }
 

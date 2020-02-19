@@ -8,8 +8,10 @@ import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { HomeComponent } from './home/home.component';
 import { TicketListComponent } from './tickets/ticket-list/ticket-list.component';
-import { TicketService } from './tickets/ticket.services';
+import { TicketService } from './tickets/ticket.service';
 import { TicketEditorComponent } from './tickets/ticket-editor/ticket-editor.component';
+import { NewTicketComponent } from './tickets/new-ticket/new-ticket.component';
+import { TicketHttpService } from './tickets/ticket-http.service';
 
 @NgModule({
   declarations: [
@@ -17,7 +19,8 @@ import { TicketEditorComponent } from './tickets/ticket-editor/ticket-editor.com
     NavMenuComponent,
     HomeComponent,
     TicketListComponent,
-    TicketEditorComponent
+    TicketEditorComponent,
+    NewTicketComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -26,11 +29,13 @@ import { TicketEditorComponent } from './tickets/ticket-editor/ticket-editor.com
     RouterModule.forRoot([
       { path: '', component: HomeComponent, pathMatch: 'full' },
       { path: 'tickets', component: TicketListComponent, pathMatch: 'full' },
-      { path: 'ticket/:ticketId', component: TicketEditorComponent }
+      { path: 'ticket/:ticketId', component: TicketEditorComponent },
+      { path: 'new-ticket', component: NewTicketComponent }
     ])
   ],
   providers: [
-    TicketService
+    TicketService,
+    TicketHttpService
   ],
   bootstrap: [AppComponent]
 })

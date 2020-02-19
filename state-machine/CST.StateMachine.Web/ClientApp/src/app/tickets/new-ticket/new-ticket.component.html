@@ -1,0 +1,38 @@
+ <form 
+    class="container" 
+    #newTicketForm="ngForm"
+    (ngSubmit)="onSubmit(newTicketForm)">
+    <div class="row">
+        <div class="col-sm">
+            <h1>New ticket</h1>
+        </div>
+        <div class="col-sm py-1 align-middle">
+            <button 
+                class="btn btn-success float-right"
+                [disabled]="!newTicketForm.form.valid">
+                Create
+            </button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm">
+            <label for="description">Description</label>
+            <textarea 
+                id="description"
+                class="form-control"
+                type="text"
+                required
+                #description="ngModel"
+                [(ngModel)]="ticket.Description"
+                rows="10"
+                name="description"
+                >
+            </textarea>
+            <div 
+                class="alert alert-danger"
+                [hidden]="description.valid || description.pristine">
+                Description is required
+            </div>
+        </div>
+    </div>
+</form>

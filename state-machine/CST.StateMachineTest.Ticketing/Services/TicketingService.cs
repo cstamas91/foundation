@@ -5,6 +5,7 @@ using AutoMapper;
 using CST.Common.Utils.Common;
 using CST.StateMachineTest.Data;
 using CST.StateMachineTest.Services;
+using CST.StateMachineTest.Ticketing.Data;
 using CST.StateMachineTest.Ticketing.Dtos;
 using CST.StateMachineTest.Ticketing.Repositories;
 using Microsoft.Extensions.Logging;
@@ -36,11 +37,11 @@ namespace CST.StateMachineTest.Ticketing.Services
             return _mapper.Map<TicketDto>(ticket);
         }
 
-        public IEnumerable<TicketDto> GetTickets(TicketFilter filter)
+        public IEnumerable<TicketListDto> GetTickets(TicketFilter filter)
         {
             var filterExpression = _mapper.Map<TicketFilter, Expression<Func<Ticket, bool>>>(filter);
             var ticketEnumerable = _ticketRepository.GetList(filterExpression);
-            return _mapper.Map<IEnumerable<TicketDto>>(ticketEnumerable);
+            return _mapper.Map<IEnumerable<TicketListDto>>(ticketEnumerable);
         }
 
         public TicketDto CreateTicket(CreateTicketDto dto)

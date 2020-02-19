@@ -1,3 +1,76 @@
-<div>
-    <h1>Ticket {{ticket.Id}}</h1>
-</div>
+<form 
+    class="container"
+    #editTicketForm="ngForm"
+    (ngSubmit)="onSubmit(editTicketForm)">
+    <div class="row">
+        <div class="col-sm">
+        <h1>#{{ticket.Id}} {{ticket.Title}}</h1>
+        </div>
+        <div class="col-sm py-1">
+            <button 
+                class="btn btn-success float-right"
+                [disabled]="!editTicketForm.form.valid || editTicketForm.pristine">
+                Save changes
+            </button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm">
+            <label for="title">Title</label>
+            <input 
+                id="title" 
+                class="form-control"
+                type="text" 
+                name="title" 
+                required
+                #title="ngModel"
+                [(ngModel)]="ticket.Title"
+                >
+            <div 
+                class="alert alert-danger"
+                [hidden]="title.valid || title.pristine">
+                Title is required
+            </div>
+        </div>
+        <div class="col-sm">
+            <label for="state">State</label>
+            <select 
+                class="form-control"
+                name="transition"
+                [(ngModel)]="transitionId">
+                <option [value]="null"></option>
+                <option 
+                    *ngFor="let selectable of ticketTransitions" 
+                    [value]="selectable.Id">
+                    {{selectable.Name}}
+                </option>
+            </select>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm">
+            <label for=""></label>
+            <textarea
+                id="description"
+                class="form-control"
+                type="text"
+                required
+                #description="ngModel"
+                [(ngModel)]="ticket.Description"
+                name="description"
+                rows="10"
+                >
+            </textarea>
+            <div 
+                class="alert alert-danger"
+                [hidden]="description.valid || description.pristine">
+                Description is required
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm">
+            
+        </div>
+    </div>
+</form>

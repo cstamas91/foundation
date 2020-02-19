@@ -4,15 +4,20 @@ using CST.StateMachineTest.Data;
 using CST.StateMachineTest.Ticketing.Data;
 using CST.StateMachineTest.Ticketing.Repositories;
 using CST.StateMachineTest.Ticketing.Services;
+using CST.StateMachineTest.Ticketing.Controllers;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Net.Http.Headers;
 
 namespace CST.StateMachineTest.Ticketing
 {
-    public static class TicketingFeatureExtensions 
+    public static class TicketingFeatureExtensions
     {
+        private const string CorsPolicyName = "TicketingFrontend";
+
         public static IServiceCollection ConfigureTicketingFeature(this IServiceCollection services)
         {
             services.AddDbContext<StateMachineContext>(builder =>
@@ -34,18 +39,33 @@ namespace CST.StateMachineTest.Ticketing
                     .WithKeyType<int>()
                     .WithGraphEnumType<GraphEnum>()
                     .WithVertexEnumType<TicketingEnum>()
-                    .WithSubjectType<Ticket>()
+                    .WithSubjectType<Ticket>(nameof(TicketingController).Replace("Controller", string.Empty))
                     .WithRepositoryType<TicketingRepository>()
                     .WithStateMachineService<TicketingStateMachineService>()
                     .Build();
             });
             services.AddAutoMapper(typeof(TicketingFeatureExtensions).Assembly);
+            services.AddCors(options =>
+            {
+                options.AddPolicy(
+                    CorsPolicyName,
+                    ConfigureCorsPolicy);
+            });
 
             return services;
         }
 
+        private static void ConfigureCorsPolicy(CorsPolicyBuilder builder)
+        {
+            builder
+                .AllowAnyOrigin()
+                .AllowAnyMethod()
+                .WithHeaders(HeaderNames.ContentType);
+        }
+
         public static IApplicationBuilder UseTicketingFeature(this IApplicationBuilder app)
         {
+            app.UseCors(CorsPolicyName);
             return app;
         }
     }

@@ -4,14 +4,16 @@ using CST.StateMachineTest.Ticketing.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace CST.StateMachineTest.Ticketing.Migrations
 {
     [DbContext(typeof(StateMachineContext))]
-    partial class StateMachineContextModelSnapshot : ModelSnapshot
+    [Migration("20200219181705_Ticket_AddTitle")]
+    partial class Ticket_AddTitle
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

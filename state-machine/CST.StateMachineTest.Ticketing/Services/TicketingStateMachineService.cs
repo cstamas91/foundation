@@ -1,5 +1,6 @@
 ﻿using CST.Common.Utils.StateMachineFeature.BaseClasses;
 using CST.StateMachineTest.Data;
+using CST.StateMachineTest.Ticketing.Data;
 using CST.StateMachineTest.Ticketing.Repositories;
 
 namespace CST.StateMachineTest.Ticketing.Services

@@ -4,6 +4,7 @@ using System.Linq.Expressions;
 using AutoMapper;
 using CST.Common.Utils;
 using CST.StateMachineTest.Data;
+using CST.StateMachineTest.Ticketing.Data;
 using CST.StateMachineTest.Ticketing.Dtos;
 
 namespace CST.StateMachineTest.Ticketing.Mappers.Converters
