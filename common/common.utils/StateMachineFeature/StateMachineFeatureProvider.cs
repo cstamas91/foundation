@@ -6,12 +6,12 @@ using Microsoft.AspNetCore.Mvc.Controllers;
 
 namespace CST.Common.Utils.StateMachineFeature
 {
-    internal class StateMachineFeatureProvider<TKey> : IApplicationFeatureProvider<ControllerFeature> 
+    internal class StateMachineFeatureProvider<TKey, TSubject> : IApplicationFeatureProvider<ControllerFeature> 
         where TKey : struct, IEquatable<TKey>
     {
         public void PopulateFeature(IEnumerable<ApplicationPart> parts, ControllerFeature feature)
         {
-            feature.Controllers.Add(typeof(StateMachineController<TKey>).GetTypeInfo());
+            feature.Controllers.Add(typeof(StateMachineController<TKey, TSubject>).GetTypeInfo());
         }
     }
 }

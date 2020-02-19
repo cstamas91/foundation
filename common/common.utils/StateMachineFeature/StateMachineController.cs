@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace CST.Common.Utils.StateMachineFeature
 {
     [Controller]
-    public class StateMachineController<TKey> : ControllerBase 
+    public class StateMachineController<TKey, TSubject> : ControllerBase 
         where TKey : struct, IEquatable<TKey>
     {
         private readonly IStateMachineMetaService<TKey> _stateMachineMetaService;
@@ -22,15 +22,11 @@ namespace CST.Common.Utils.StateMachineFeature
         }
 
         [HttpGet("transitions")]
-        public IActionResult GetTransitions()
+        public IActionResult GetTransitions([FromQuery] TKey? currentStateId)
         {
-            return Ok(_stateMachineMetaService.GetInitialTransitions());
-        }
-
-        [HttpGet("transitions/{currentStateId}")]
-        public IActionResult GetTransitions(TKey currentStateId)
-        {
-            return Ok(_stateMachineMetaService.GetTransitions(currentStateId));
+            return Ok(currentStateId.HasValue 
+                ? _stateMachineMetaService.GetTransitions(currentStateId.Value) 
+                : _stateMachineMetaService.GetInitialTransitions());
         }
     }
 }
