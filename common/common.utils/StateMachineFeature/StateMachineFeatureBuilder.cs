@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices.ComTypes;
 using CST.Common.Utils.StateMachineFeature.BaseClasses;
 using CST.Common.Utils.StateMachineFeature.ViewModel;
 using Microsoft.AspNetCore.Mvc.ApplicationParts;
@@ -9,138 +10,105 @@ namespace CST.Common.Utils.StateMachineFeature
 {
     public class StateMachineFeatureBuilder
     {
-        private readonly IList<IApplicationFeatureProvider> _featureProviders;
-        private readonly IServiceCollection _services;
+        protected readonly IMvcCoreBuilder MvcCoreBuilder;
+        protected readonly IServiceCollection Services;
 
         public StateMachineFeatureBuilder(IServiceCollection services)
         {
-            _featureProviders = services.AddMvcCore().PartManager.FeatureProviders;
-            _services = services;
+            MvcCoreBuilder = services.AddMvcCore();
+            Services = services;
         }
 
         public StateMachineFeatureBuilder<T> WithKeyType<T>()
             where T : struct, IEquatable<T>
         {
-            return new StateMachineFeatureBuilder<T>(_featureProviders, _services);
+            return new StateMachineFeatureBuilder<T>(Services);
         }
     }
 
-    public class StateMachineFeatureBuilder<T1>
+    public class StateMachineFeatureBuilder<T1> : StateMachineFeatureBuilder
         where T1 : struct, IEquatable<T1>
     {
-        private readonly IList<IApplicationFeatureProvider> _featureProviders;
-        private readonly IServiceCollection _services;
-
-        public StateMachineFeatureBuilder(
-            IList<IApplicationFeatureProvider> featureProviders,
-            IServiceCollection services)
+        public StateMachineFeatureBuilder(IServiceCollection services) : base(services)
         {
-            _featureProviders = featureProviders;
-            _services = services;
         }
 
         public StateMachineFeatureBuilder<T1, T> WithGraphEnumType<T>()
             where T : struct, IConvertible
         {
-            return new StateMachineFeatureBuilder<T1, T>(_featureProviders, _services);
+            return new StateMachineFeatureBuilder<T1, T>(Services);
         }
     }
 
-    public class StateMachineFeatureBuilder<T1, T2>
+    public class StateMachineFeatureBuilder<T1, T2> : StateMachineFeatureBuilder<T1>
         where T1 : struct, IEquatable<T1>
         where T2 : struct, IConvertible
     {
-        private readonly IList<IApplicationFeatureProvider> _featureProviders;
-        private readonly IServiceCollection _services;
-
-        public StateMachineFeatureBuilder(
-            IList<IApplicationFeatureProvider> featureProviders,
-            IServiceCollection services)
+        public StateMachineFeatureBuilder(IServiceCollection services) : base(services)
         {
-            _featureProviders = featureProviders;
-            _services = services;
         }
 
         public StateMachineFeatureBuilder<T1, T2, T> WithVertexEnumType<T>()
             where T : struct, IConvertible
         {
-            return new StateMachineFeatureBuilder<T1, T2, T>(_featureProviders, _services);
+            return new StateMachineFeatureBuilder<T1, T2, T>(Services);
         }
     }
 
-    public class StateMachineFeatureBuilder<T1, T2, T3>
+    public class StateMachineFeatureBuilder<T1, T2, T3> : StateMachineFeatureBuilder<T1, T2>
         where T1 : struct, IEquatable<T1>
         where T2 : struct, IConvertible
         where T3 : struct, IConvertible
     {
-        private readonly IList<IApplicationFeatureProvider> _featureProviders;
-        private readonly IServiceCollection _services;
-
-        public StateMachineFeatureBuilder(
-            IList<IApplicationFeatureProvider> featureProviders,
-            IServiceCollection services)
+        public StateMachineFeatureBuilder(IServiceCollection services) : base(services)
         {
-            _featureProviders = featureProviders;
-            _services = services;
         }
 
-        public StateMachineFeatureBuilder<T1, T2, T3, T> WithSubjectType<T>()
+        public StateMachineFeatureBuilder<T1, T2, T3, T> WithSubjectType<T>(string controllerName)
             where T : StateMachineSubject<T1, T2, T3, T>, new()
         {
-            return new StateMachineFeatureBuilder<T1, T2, T3, T>(_featureProviders, _services);
+            return new StateMachineFeatureBuilder<T1, T2, T3, T>(Services, controllerName);
         }
     }
 
-    public class StateMachineFeatureBuilder<T1, T2, T3, T4>
+    public class StateMachineFeatureBuilder<T1, T2, T3, T4> : StateMachineFeatureBuilder<T1, T2, T3>
         where T1 : struct, IEquatable<T1>
         where T2 : struct, IConvertible
         where T3 : struct, IConvertible
         where T4 : StateMachineSubject<T1, T2, T3, T4>, new()
     {
-        private readonly IList<IApplicationFeatureProvider> _featureProviders;
-        private readonly IServiceCollection _services;
-
-        public StateMachineFeatureBuilder(
-            IList<IApplicationFeatureProvider> featureProviders,
-            IServiceCollection services)
+        protected readonly string SubjectControllerName;
+        public StateMachineFeatureBuilder(IServiceCollection services, string subjectControllerName) : base(services)
         {
-            _featureProviders = featureProviders;
-            _services = services;
+            SubjectControllerName = subjectControllerName;
         }
 
         public StateMachineFeatureBuilder<T1, T2, T3, T4, T> WithRepositoryType<T>()
             where T : BaseStateMachineRepository<T1, T2, T3, T4>
         {
-            return new StateMachineFeatureBuilder<T1, T2, T3, T4, T>(_featureProviders, _services);
+            return new StateMachineFeatureBuilder<T1, T2, T3, T4, T>(Services, SubjectControllerName);
         }
     }
 
-    public class StateMachineFeatureBuilder<T1, T2, T3, T4, T5>
+    public class StateMachineFeatureBuilder<T1, T2, T3, T4, T5> : StateMachineFeatureBuilder<T1, T2, T3, T4>
         where T1 : struct, IEquatable<T1>
         where T2 : struct, IConvertible
         where T3 : struct, IConvertible
         where T4 : StateMachineSubject<T1, T2, T3, T4>, new()
         where T5 : BaseStateMachineRepository<T1, T2, T3, T4>
     {
-        private readonly IList<IApplicationFeatureProvider> _featureProviders;
-        private readonly IServiceCollection _services;
-
-        public StateMachineFeatureBuilder(
-            IList<IApplicationFeatureProvider> featureProviders,
-            IServiceCollection services)
+        public StateMachineFeatureBuilder(IServiceCollection services, string subjectControllerName) : base(services, subjectControllerName)
         {
-            _featureProviders = featureProviders;
-            _services = services;
         }
 
         public StateMachineFeatureBuilder<T1, T2, T3, T4, T5, T> WithStateMachineService<T>()
             where T : BaseStateMachineService<T1, T2, T3, T4, T5>
         {
-            return new StateMachineFeatureBuilder<T1, T2, T3, T4, T5, T>(_featureProviders, _services);
+            return new StateMachineFeatureBuilder<T1, T2, T3, T4, T5, T>(Services, SubjectControllerName);
         }
     }
 
-    public class StateMachineFeatureBuilder<T1, T2, T3, T4, T5, T6>
+    public class StateMachineFeatureBuilder<T1, T2, T3, T4, T5, T6> : StateMachineFeatureBuilder<T1, T2, T3, T4, T5>
         where T1 : struct, IEquatable<T1>
         where T2 : struct, IConvertible
         where T3 : struct, IConvertible
@@ -148,15 +116,8 @@ namespace CST.Common.Utils.StateMachineFeature
         where T5 : BaseStateMachineRepository<T1, T2, T3, T4>
         where T6 : BaseStateMachineService<T1, T2, T3, T4, T5>
     {
-        private readonly IList<IApplicationFeatureProvider> _featureProviders;
-        private readonly IServiceCollection _services;
-
-        public StateMachineFeatureBuilder(
-            IList<IApplicationFeatureProvider> featureProviders,
-            IServiceCollection services)
+        public StateMachineFeatureBuilder(IServiceCollection services, string subjectControllerName) : base(services, subjectControllerName)
         {
-            _featureProviders = featureProviders;
-            _services = services;
         }
 
         public void Build()
@@ -169,24 +130,28 @@ namespace CST.Common.Utils.StateMachineFeature
 
         private void AddFeatureProvider()
         {
-            _featureProviders.Add(new StateMachineFeatureProvider<T1>());
+            MvcCoreBuilder.PartManager.FeatureProviders.Add(new StateMachineFeatureProvider<T1, T4>());
         }
 
         private void AddStateMachineRepository()
         {
-            _services.AddScoped<T5>();
-            _services.AddScoped<BaseStateMachineRepository<T1, T2, T3, T4>>((svc) => svc.GetService<T5>());
+            Services.AddScoped<T5>();
+            Services.AddScoped<BaseStateMachineRepository<T1, T2, T3, T4>>((svc) => svc.GetService<T5>());
         }
 
         private void AddStateMachineMetaService()
         {
-            _services.AddScoped<IStateMachineMetaService<T1>, StateMachineMetaService<T1, T2, T3, T5, T4>>();
+            Services.AddScoped<IStateMachineMetaService<T1>, StateMachineMetaService<T1, T2, T3, T5, T4>>();
+            MvcCoreBuilder.AddMvcOptions(o =>
+                {
+                    o.Conventions.Add(new StateMachineControllerNameConvention<T1, T4>(SubjectControllerName));
+                });
         }
 
         private void AddStateMachineService()
         {
-            _services.AddScoped<T6>();
-            _services.AddScoped<BaseStateMachineService<T1, T2, T3, T4, T5>>(
+            Services.AddScoped<T6>();
+            Services.AddScoped<BaseStateMachineService<T1, T2, T3, T4, T5>>(
                 serviceProvider => serviceProvider.GetRequiredService<T6>());
         }
     }
