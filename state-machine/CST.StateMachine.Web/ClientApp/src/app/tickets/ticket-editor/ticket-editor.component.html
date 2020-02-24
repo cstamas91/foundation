@@ -69,8 +69,9 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-sm">
-            
+        <div class="col-sm" *ngIf="ticket">
+            <child-collection [items]="ticket.RelatedCommits">
+            </child-collection>
         </div>
     </div>
 </form>

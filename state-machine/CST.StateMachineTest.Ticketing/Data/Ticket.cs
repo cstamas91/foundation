@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
+using CST.Common.Utils.Common;
 using CST.Common.Utils.StateMachineFeature.BaseClasses;
 using CST.StateMachineTest.Data;
 
 namespace CST.StateMachineTest.Ticketing.Data
 {
-    public class Ticket : StateMachineSubject<int, GraphEnum, TicketingEnum, Ticket>
+    public class Ticket : StateMachineSubject<int, GraphEnum, TicketingEnum, Ticket>, IIdentifiable<int>
     {
         public override StateMachineSubjectMoment<int, GraphEnum, TicketingEnum, Ticket>
             CurrentSubjectState { get; set; }

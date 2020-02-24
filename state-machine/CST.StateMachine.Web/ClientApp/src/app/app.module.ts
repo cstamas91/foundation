@@ -12,6 +12,8 @@ import { TicketService } from './tickets/ticket.service';
 import { TicketEditorComponent } from './tickets/ticket-editor/ticket-editor.component';
 import { NewTicketComponent } from './tickets/new-ticket/new-ticket.component';
 import { TicketHttpService } from './tickets/ticket-http.service';
+import { ChildCollectionComponent } from './common/components/child-collection/child-collection.component';
+import { UpdateableItemComponent } from './common/components/child-collection/updateable-item.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +22,9 @@ import { TicketHttpService } from './tickets/ticket-http.service';
     HomeComponent,
     TicketListComponent,
     TicketEditorComponent,
-    NewTicketComponent
+    NewTicketComponent,
+    ChildCollectionComponent,
+    UpdateableItemComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),

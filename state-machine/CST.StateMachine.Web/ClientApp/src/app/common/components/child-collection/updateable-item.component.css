@@ -1,0 +1,22 @@
+.updateable-item {
+    display: inline-grid;
+    grid-template-rows: auto;
+    grid-template-columns: auto 40px 40px;
+}
+
+.item-display{
+    grid-column-start: 1;
+    justify-self: start;
+}
+
+.item-modify{
+    grid-column-start: 2;
+    justify-self: stretch;
+    margin: 0px 2px;
+}
+
+.item-delete{
+    grid-column-start: 3;
+    justify-self: stretch;
+    margin: 0px 2px;
+}

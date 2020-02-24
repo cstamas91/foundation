@@ -22,6 +22,7 @@ export class TicketEditorComponent implements OnInit {
               .GetTicket(ticketId)
               .subscribe(ticket => {
                 this.ticket = ticket;
+                console.log(this.ticket.RelatedCommits);
               });
         });
     this.ticketService

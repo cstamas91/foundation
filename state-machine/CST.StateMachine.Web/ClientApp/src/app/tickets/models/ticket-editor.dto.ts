@@ -5,14 +5,14 @@ export class TicketEditorDTO {
     Id: number;
     StateId: number;
     Description: string;
-    Commits: ChildCollection<CommitDTO>;
+    RelatedCommits: ChildCollection<CommitDTO>;
     Title: string;
 
     constructor(){
         this.Id = 0;
         this.StateId = 0;
         this.Description = 'Write something';
-        this.Commits = new ChildCollection<CommitDTO>();
+        this.RelatedCommits = new ChildCollection<CommitDTO>();
         this.Title = '';
     }
 }

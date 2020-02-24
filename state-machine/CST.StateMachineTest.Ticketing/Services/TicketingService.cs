@@ -34,7 +34,8 @@ namespace CST.StateMachineTest.Ticketing.Services
         public TicketDto GetTicket(int id)
         {
             var ticket = _ticketRepository.GetById(id);
-            return _mapper.Map<TicketDto>(ticket);
+            var ticketDto = _mapper.Map<TicketDto>(ticket);
+            return ticketDto;
         }
 
         public IEnumerable<TicketListDto> GetTickets(TicketFilter filter)
@@ -59,19 +60,20 @@ namespace CST.StateMachineTest.Ticketing.Services
 
         public TicketDto UpdateTicket(TicketDto dto, int? transitionId = null)
         {
-            Ticket updatedTicket = default;
+            Ticket ticket = default;
             TransactionHelper.WithTransactionScope(() =>
                 {
-                    updatedTicket = _mapper.Map(dto, _ticketRepository.GetById(dto.Id));
-                    _ticketRepository.Update(updatedTicket);
+                    ticket = _ticketRepository.GetById(dto.Id);
+                    _mapper.Map(dto, ticket);
+                    _ticketRepository.Update(ticket);
                     if (transitionId.HasValue)
                     {
-                        updatedTicket = _stateMachineService.StepSubject(updatedTicket, transitionId.Value);
+                        ticket = _stateMachineService.StepSubject(ticket, transitionId.Value);
                     }
                 },
                 _logger);
 
-            return _mapper.Map<TicketDto>(updatedTicket);
+            return _mapper.Map<TicketDto>(ticket);
         }
     }
 }
