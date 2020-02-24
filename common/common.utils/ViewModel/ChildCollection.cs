@@ -21,7 +21,7 @@ namespace CST.Common.Utils.ViewModel
                 .Select(UpdateableItem<T>.Unchanged)
                 .ToList();
         }
-        public IReadOnlyCollection<UpdateableItem<T>> Items { get; private set; }
+        public IReadOnlyCollection<UpdateableItem<T>> Items { get; set; }
 
         public IEnumerable<T> GetItems(UpdateableItemState updateableItemState) =>
             Items
