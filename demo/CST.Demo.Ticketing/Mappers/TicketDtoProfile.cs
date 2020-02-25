@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using System.Runtime.InteropServices;
 using AutoMapper;
 using CST.Common.Utils.ViewModel;
 using CST.StateMachineTest.Data;
@@ -21,11 +22,9 @@ namespace CST.StateMachineTest.Ticketing.Mappers
 
             CreateMap<TicketDto, Ticket>()
                 .ForMember(
-                    t => t.RelatedCommits,
-                    expression => expression.MapFrom(dto => dto.RelatedCommits));
-
-            CreateMap<ChildCollection<CommitDto>, ICollection<Commit>>()
-                .ConvertUsing<ChildCollectionConverter<Commit, CommitDto, int>>();
+                    ticket => ticket.RelatedCommits, 
+                    expression => expression.Ignore())
+                .AfterMap<UpdateableItemResultResolver<TicketDto, Ticket, Commit, CommitDto,int >>();
 
             CreateMap<TicketFilter, Expression<Func<Ticket, bool>>>()
                 .ConvertUsing<TicketFilterConverter>();

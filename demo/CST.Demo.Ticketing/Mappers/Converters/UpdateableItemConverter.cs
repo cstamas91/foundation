@@ -1,0 +1,17 @@
+﻿using System;
+using System.Collections;
+using AutoMapper;
+using CST.Common.Utils.Common;
+using CST.Common.Utils.ViewModel;
+
+namespace CST.StateMachineTest.Ticketing.Mappers.Converters
+{
+    public class UpdateableItemConverter<TItem, TDto> : 
+        IValueConverter<TItem, UpdateableItem<TDto>>
+    {
+        public UpdateableItem<TDto> Convert(TItem sourceMember, ResolutionContext context)
+        {
+            return UpdateableItem<TDto>.Unchanged(context.Mapper.Map<TItem, TDto>(sourceMember));
+        }
+    }
+}

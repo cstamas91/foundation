@@ -14,7 +14,7 @@ namespace CST.StateMachineTest.Ticketing.Mappers
             CreateMap<Ticket, TicketDto>()
                 .ForMember(
                     dto => dto.RelatedCommits,
-                    ChildCollectionConverter<Commit, CommitDto, int>.Define);
+                    expression => UpdateableItemListConverter<Commit, CommitDto, int>.Define(expression, ticket => ticket.RelatedCommits));
 
             CreateMap<Ticket, TicketListDto>()
                 .ForMember(
