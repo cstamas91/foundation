@@ -1,4 +1,4 @@
-﻿namespace CST.StateMachineTest.Data
+﻿namespace CST.Demo.Ticketing.Data
 {
     public enum GraphEnum
     {

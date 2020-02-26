@@ -1,10 +1,9 @@
 ﻿using System.Linq;
 using CST.Common.Utils.StateMachineFeature.BaseClasses;
-using CST.StateMachineTest.Data;
-using CST.StateMachineTest.Ticketing.Data;
+using CST.Demo.Ticketing.Data;
 using Microsoft.EntityFrameworkCore;
 
-namespace CST.StateMachineTest.Services
+namespace CST.Demo.Ticketing.Repositories
 {
     public static class IncludeExtensions
     {

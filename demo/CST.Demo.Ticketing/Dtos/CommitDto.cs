@@ -1,7 +1,6 @@
 ﻿using CST.Common.Utils.Common;
-using CST.StateMachineTest.Data;
 
-namespace CST.StateMachineTest.Ticketing.Dtos
+namespace CST.Demo.Ticketing.Dtos
 {
     public class CommitDto : IIdentifiable<int>
     {

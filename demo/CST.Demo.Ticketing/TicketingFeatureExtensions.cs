@@ -1,18 +1,18 @@
 ﻿using AutoMapper;
 using CST.Common.Utils.StateMachineFeature;
-using CST.StateMachineTest.Data;
-using CST.StateMachineTest.Ticketing.Data;
-using CST.StateMachineTest.Ticketing.Repositories;
-using CST.StateMachineTest.Ticketing.Services;
-using CST.StateMachineTest.Ticketing.Controllers;
+using CST.Demo.Ticketing.Controllers;
+using CST.Demo.Ticketing.Data;
+using CST.Demo.Ticketing.Repositories;
+using CST.Demo.Ticketing.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Cors.Infrastructure;
+using Microsoft.AspNetCore.Internal;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Net.Http.Headers;
 
-namespace CST.StateMachineTest.Ticketing
+namespace CST.Demo.Ticketing
 {
     public static class TicketingFeatureExtensions
     {
@@ -25,7 +25,7 @@ namespace CST.StateMachineTest.Ticketing
                 var connectionStringBuilder = new SqlConnectionStringBuilder()
                 {
                     InitialCatalog = "StateMachine",
-                    DataSource = "(localdb)\\MSSQLLocalDB",
+                    DataSource = @"(localdb)\MSSQLLocalDB",
                     IntegratedSecurity = true,
                     MultipleActiveResultSets = true
                 };

@@ -1,9 +1,8 @@
 ﻿using CST.Common.Utils.StateMachineFeature.BaseClasses;
-using CST.StateMachineTest.Data;
-using CST.StateMachineTest.Ticketing.Data;
-using CST.StateMachineTest.Ticketing.Repositories;
+using CST.Demo.Ticketing.Data;
+using CST.Demo.Ticketing.Repositories;
 
-namespace CST.StateMachineTest.Ticketing.Services
+namespace CST.Demo.Ticketing.Services
 {
     public class TicketingStateMachineService :
         BaseStateMachineService<int, GraphEnum, TicketingEnum, Ticket, TicketingRepository>

@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace CST.StateMachineTest.Ticketing.Migrations
+namespace CST.Demo.Ticketing.Migrations
 {
     public partial class GraphFieldsAdded : Migration
     {

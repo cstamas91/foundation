@@ -1,12 +1,11 @@
-using System.Text.Json;
+using CST.Demo.Ticketing;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using CST.StateMachineTest.Ticketing;
 
-namespace CST.StateMachineTest.Api
+namespace CST.Demo.Api
 {
     public class Startup
     {

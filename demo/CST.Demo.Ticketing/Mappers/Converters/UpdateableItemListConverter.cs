@@ -6,7 +6,7 @@ using AutoMapper;
 using CST.Common.Utils.Common;
 using CST.Common.Utils.ViewModel;
 
-namespace CST.StateMachineTest.Ticketing.Mappers.Converters
+namespace CST.Demo.Ticketing.Mappers.Converters
 {
     public class UpdateableItemListConverter<TItem, TDto, TKey> : 
         IValueConverter<ICollection<TItem>, List<UpdateableItem<TDto>>>

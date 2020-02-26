@@ -1,11 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
-using CST.StateMachineTest.Data;
-using CST.StateMachineTest.Ticketing.Data;
-using CST.StateMachineTest.Ticketing.Dtos;
+using CST.Demo.Ticketing.Data;
+using CST.Demo.Ticketing.Dtos;
 
-namespace CST.StateMachineTest.Ticketing.Mappers.Converters
+namespace CST.Demo.Ticketing.Mappers.Converters
 {
     public class TicketListConverter : ITypeConverter<IEnumerable<Ticket>, IEnumerable<TicketDto>>
     {

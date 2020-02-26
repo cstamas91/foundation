@@ -1,13 +1,12 @@
 ﻿using System.Collections.Generic;
 using CST.Common.Utils.StateMachineFeature.BaseClasses;
-using CST.StateMachineTest.Data;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 
 // ReSharper disable StringLiteralTypo
 
-namespace CST.StateMachineTest.Ticketing.Data
+namespace CST.Demo.Ticketing.Data
 {
     using TTicketingHistory = StateMachineSubjectMoment<int, GraphEnum, TicketingEnum, Ticket>;
     using TicketVertex = Vertex<int, GraphEnum, TicketingEnum>;

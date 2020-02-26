@@ -3,14 +3,12 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using AutoMapper;
 using CST.Common.Utils.Common;
-using CST.StateMachineTest.Data;
-using CST.StateMachineTest.Services;
-using CST.StateMachineTest.Ticketing.Data;
-using CST.StateMachineTest.Ticketing.Dtos;
-using CST.StateMachineTest.Ticketing.Repositories;
+using CST.Demo.Ticketing.Data;
+using CST.Demo.Ticketing.Dtos;
+using CST.Demo.Ticketing.Repositories;
 using Microsoft.Extensions.Logging;
 
-namespace CST.StateMachineTest.Ticketing.Services
+namespace CST.Demo.Ticketing.Services
 {
     public class TicketingService
     {

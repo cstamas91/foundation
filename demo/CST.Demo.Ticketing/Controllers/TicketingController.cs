@@ -1,13 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using CST.StateMachineTest.Services;
-using CST.StateMachineTest.Ticketing.Dtos;
-using CST.StateMachineTest.Ticketing.Services;
+﻿using CST.Demo.Ticketing.Dtos;
+using CST.Demo.Ticketing.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Abstractions;
 using Microsoft.Extensions.Logging;
 
-namespace CST.StateMachineTest.Ticketing.Controllers
+namespace CST.Demo.Ticketing.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]

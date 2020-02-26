@@ -1,15 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
-using System.Runtime.InteropServices;
 using AutoMapper;
-using CST.Common.Utils.ViewModel;
-using CST.StateMachineTest.Data;
-using CST.StateMachineTest.Ticketing.Data;
-using CST.StateMachineTest.Ticketing.Dtos;
-using CST.StateMachineTest.Ticketing.Mappers.Converters;
+using CST.Demo.Ticketing.Data;
+using CST.Demo.Ticketing.Dtos;
+using CST.Demo.Ticketing.Mappers.Converters;
 
-namespace CST.StateMachineTest.Ticketing.Mappers
+namespace CST.Demo.Ticketing.Mappers
 {
     public class TicketDtoProfile : Profile
     {

@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections;
-using AutoMapper;
-using CST.Common.Utils.Common;
+﻿using AutoMapper;
 using CST.Common.Utils.ViewModel;
 
-namespace CST.StateMachineTest.Ticketing.Mappers.Converters
+namespace CST.Demo.Ticketing.Mappers.Converters
 {
     public class UpdateableItemConverter<TItem, TDto> : 
         IValueConverter<TItem, UpdateableItem<TDto>>

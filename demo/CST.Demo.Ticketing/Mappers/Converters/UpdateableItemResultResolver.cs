@@ -5,7 +5,7 @@ using AutoMapper;
 using CST.Common.Utils.Common;
 using CST.Common.Utils.ViewModel;
 
-namespace CST.StateMachineTest.Ticketing.Mappers.Converters
+namespace CST.Demo.Ticketing.Mappers.Converters
 {
     public class UpdateableItemResultResolver<TMemberSource, TMemberDestination, TItem, TDto, TKey> :
         IMappingAction<TMemberSource, TMemberDestination>

@@ -1,4 +1,4 @@
-﻿namespace CST.StateMachineTest.Ticketing.Dtos
+﻿namespace CST.Demo.Ticketing.Dtos
 {
     public class CreateTicketDto
     {

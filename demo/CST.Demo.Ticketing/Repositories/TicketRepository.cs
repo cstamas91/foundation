@@ -2,11 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using CST.StateMachineTest.Data;
-using CST.StateMachineTest.Services;
-using CST.StateMachineTest.Ticketing.Data;
+using CST.Demo.Ticketing.Data;
 
-namespace CST.StateMachineTest.Ticketing.Repositories
+namespace CST.Demo.Ticketing.Repositories
 {
     public class TicketRepository
     {

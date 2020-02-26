@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace CST.StateMachineTest.Ticketing.Dtos
+﻿namespace CST.Demo.Ticketing.Dtos
 {
     public class TicketListDto
     {

@@ -1,10 +1,9 @@
 ﻿using AutoMapper;
 using CST.Common.Utils.StateMachineFeature.BaseClasses;
-using CST.StateMachineTest.Data;
-using CST.StateMachineTest.Ticketing.Data;
-using CST.StateMachineTest.Ticketing.Mappers.Converters;
+using CST.Demo.Ticketing.Data;
+using CST.Demo.Ticketing.Mappers.Converters;
 
-namespace CST.StateMachineTest.Ticketing.Mappers
+namespace CST.Demo.Ticketing.Mappers
 {
     public class StateProfile : Profile
     {

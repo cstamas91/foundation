@@ -2,9 +2,8 @@
 using CST.Common.Utils.Common;
 using CST.Common.Utils.StateMachineFeature.BaseClasses;
 using CST.Common.Utils.ViewModel;
-using CST.StateMachineTest.Data;
 
-namespace CST.StateMachineTest.Ticketing.Data
+namespace CST.Demo.Ticketing.Data
 {
     public class Ticket : StateMachineSubject<int, GraphEnum, TicketingEnum, Ticket>, 
         IIdentifiable<int>, 

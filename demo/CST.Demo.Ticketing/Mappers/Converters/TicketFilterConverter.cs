@@ -3,11 +3,10 @@ using System.Linq;
 using System.Linq.Expressions;
 using AutoMapper;
 using CST.Common.Utils;
-using CST.StateMachineTest.Data;
-using CST.StateMachineTest.Ticketing.Data;
-using CST.StateMachineTest.Ticketing.Dtos;
+using CST.Demo.Ticketing.Data;
+using CST.Demo.Ticketing.Dtos;
 
-namespace CST.StateMachineTest.Ticketing.Mappers.Converters
+namespace CST.Demo.Ticketing.Mappers.Converters
 {
     public class TicketFilterConverter : ITypeConverter<TicketFilter, Expression<Func<Ticket, bool>>>
     {

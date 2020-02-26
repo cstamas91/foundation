@@ -1,0 +1,21 @@
+﻿@page "/tickets"
+@model CST.Demo.Web.Pages.Ticketing.TicketsModel
+@{
+    ViewData["Title"] = "Tickets";
+}
+
+
+<style>
+
+</style>
+
+<h1>Tickets</h1>
+
+<ul>
+@foreach (var ticket in Model.Tickets)
+{
+    <li>
+        @ticket.Id - @ticket.Title
+    </li>
+}
+</ul>

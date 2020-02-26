@@ -1,9 +1,8 @@
 ﻿using AutoMapper;
 using CST.Common.Utils.StateMachineFeature.BaseClasses;
-using CST.StateMachineTest.Data;
-using CST.StateMachineTest.Ticketing.Data;
+using CST.Demo.Ticketing.Data;
 
-namespace CST.StateMachineTest.Ticketing.Mappers.Converters
+namespace CST.Demo.Ticketing.Mappers.Converters
 {
     public class CurrentStateConverter : 
         ITypeConverter<StateMachineSubjectMoment<int, GraphEnum, TicketingEnum, Ticket>, string>,

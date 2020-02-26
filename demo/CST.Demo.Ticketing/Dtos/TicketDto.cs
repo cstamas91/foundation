@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using CST.Common.Utils.ViewModel;
 
-namespace CST.StateMachineTest.Ticketing.Dtos
+namespace CST.Demo.Ticketing.Dtos
 {
     public class TicketDto : CreateTicketDto, IUpdateableItemCollectionSource<CommitDto>
     {
