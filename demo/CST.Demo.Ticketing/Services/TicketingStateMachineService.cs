@@ -1,5 +1,5 @@
 ﻿using CST.Common.Utils.StateMachineFeature.BaseClasses;
-using CST.Demo.Data.Ticketing;
+using CST.Demo.Data.Models.Ticketing;
 using CST.Demo.Ticketing.Repositories;
 
 namespace CST.Demo.Ticketing.Services

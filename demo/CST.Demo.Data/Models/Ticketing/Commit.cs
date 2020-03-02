@@ -1,6 +1,6 @@
 ﻿using CST.Common.Utils.Common;
 
-namespace CST.Demo.Data.Ticketing
+namespace CST.Demo.Data.Models.Ticketing
 {
     public class Commit : IIdentifiable<int>
     {

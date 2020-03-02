@@ -1,17 +1,18 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace CST.Demo.Ticketing.Migrations
+namespace CST.Demo.Data.Migrations
 {
-    public partial class Init : Migration
+    public partial class Ticket_User : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.EnsureSchema(
-                name: "ticketing");
+            migrationBuilder.RenameTable(
+                name: "Users",
+                schema: "identity",
+                newName: "Users");
 
             migrationBuilder.CreateTable(
                 name: "TicketingVertex",
-                schema: "ticketing",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -27,22 +28,27 @@ namespace CST.Demo.Ticketing.Migrations
 
             migrationBuilder.CreateTable(
                 name: "Tickets",
-                schema: "ticketing",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Title = table.Column<string>(nullable: true),
-                    Description = table.Column<string>(nullable: true)
+                    Description = table.Column<string>(nullable: true),
+                    UserId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Tickets", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Tickets_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
                 name: "TicketingEdge",
-                schema: "ticketing",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -58,14 +64,12 @@ namespace CST.Demo.Ticketing.Migrations
                     table.ForeignKey(
                         name: "FK_TicketingEdge_TicketingVertex_HeadId",
                         column: x => x.HeadId,
-                        principalSchema: "ticketing",
                         principalTable: "TicketingVertex",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_TicketingEdge_TicketingVertex_TailId",
                         column: x => x.TailId,
-                        principalSchema: "ticketing",
                         principalTable: "TicketingVertex",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -73,7 +77,6 @@ namespace CST.Demo.Ticketing.Migrations
 
             migrationBuilder.CreateTable(
                 name: "Commits",
-                schema: "ticketing",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -87,7 +90,6 @@ namespace CST.Demo.Ticketing.Migrations
                     table.ForeignKey(
                         name: "FK_Commits_Tickets_TicketId",
                         column: x => x.TicketId,
-                        principalSchema: "ticketing",
                         principalTable: "Tickets",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
@@ -95,7 +97,6 @@ namespace CST.Demo.Ticketing.Migrations
 
             migrationBuilder.CreateTable(
                 name: "TicketingHistory",
-                schema: "ticketing",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -109,21 +110,18 @@ namespace CST.Demo.Ticketing.Migrations
                     table.ForeignKey(
                         name: "FK_TicketingHistory_Tickets_SubjectId",
                         column: x => x.SubjectId,
-                        principalSchema: "ticketing",
                         principalTable: "Tickets",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_TicketingHistory_TicketingVertex_VertexId",
                         column: x => x.VertexId,
-                        principalSchema: "ticketing",
                         principalTable: "TicketingVertex",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.InsertData(
-                schema: "ticketing",
                 table: "TicketingVertex",
                 columns: new[] { "Id", "Graph", "Name", "VertexEnum" },
                 values: new object[,]
@@ -136,7 +134,6 @@ namespace CST.Demo.Ticketing.Migrations
                 });
 
             migrationBuilder.InsertData(
-                schema: "ticketing",
                 table: "TicketingEdge",
                 columns: new[] { "Id", "Graph", "HeadId", "Name", "TailId" },
                 values: new object[,]
@@ -151,57 +148,60 @@ namespace CST.Demo.Ticketing.Migrations
 
             migrationBuilder.CreateIndex(
                 name: "IX_Commits_TicketId",
-                schema: "ticketing",
                 table: "Commits",
                 column: "TicketId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_TicketingEdge_HeadId",
-                schema: "ticketing",
                 table: "TicketingEdge",
                 column: "HeadId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_TicketingEdge_TailId",
-                schema: "ticketing",
                 table: "TicketingEdge",
                 column: "TailId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_TicketingHistory_SubjectId",
-                schema: "ticketing",
                 table: "TicketingHistory",
                 column: "SubjectId",
                 unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_TicketingHistory_VertexId",
-                schema: "ticketing",
                 table: "TicketingHistory",
                 column: "VertexId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Tickets_UserId",
+                table: "Tickets",
+                column: "UserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Commits",
-                schema: "ticketing");
+                name: "Commits");
 
             migrationBuilder.DropTable(
-                name: "TicketingEdge",
-                schema: "ticketing");
+                name: "TicketingEdge");
 
             migrationBuilder.DropTable(
-                name: "TicketingHistory",
-                schema: "ticketing");
+                name: "TicketingHistory");
 
             migrationBuilder.DropTable(
-                name: "Tickets",
-                schema: "ticketing");
+                name: "Tickets");
 
             migrationBuilder.DropTable(
-                name: "TicketingVertex",
-                schema: "ticketing");
+                name: "TicketingVertex");
+
+            migrationBuilder.EnsureSchema(
+                name: "identity");
+
+            migrationBuilder.RenameTable(
+                name: "Users",
+                newName: "Users",
+                newSchema: "identity");
         }
     }
 }

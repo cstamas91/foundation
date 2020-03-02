@@ -4,7 +4,7 @@ using CST.Common.Utils.StateMachineFeature.BaseClasses;
 using CST.Common.Utils.ViewModel;
 using CST.Demo.Data.Models.Identity;
 
-namespace CST.Demo.Data.Ticketing
+namespace CST.Demo.Data.Models.Ticketing
 {
     public class Ticket : StateMachineSubject<int, GraphEnum, TicketingEnum, Ticket>, 
         IIdentifiable<int>, 

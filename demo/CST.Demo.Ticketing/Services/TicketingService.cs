@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using AutoMapper;
 using CST.Common.Utils.Common;
-using CST.Demo.Data.Ticketing;
+using CST.Demo.Data.Models.Ticketing;
 using CST.Demo.Ticketing.Dtos;
 using CST.Demo.Ticketing.Repositories;
 using Microsoft.Extensions.Logging;

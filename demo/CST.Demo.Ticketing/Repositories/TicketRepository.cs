@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using CST.Demo.Data;
-using CST.Demo.Data.Ticketing;
+using CST.Demo.Data.Models.Ticketing;
 
 namespace CST.Demo.Ticketing.Repositories
 {
     public class TicketRepository
     {
-        private readonly TicketingContext _context;
+        private readonly DemoContext _context;
 
-        public TicketRepository(TicketingContext context)
+        public TicketRepository(DemoContext context)
         {
             _context = context;
         }

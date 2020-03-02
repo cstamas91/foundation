@@ -1,8 +1,7 @@
-﻿using System.Collections.Generic;
-using CST.Common.Utils.Common.Data;
-using CST.Common.Utils.StateMachineFeature.BaseClasses;
+﻿using CST.Common.Utils.StateMachineFeature.BaseClasses;
+using CST.Demo.Data.Models.Ticketing;
 using Microsoft.EntityFrameworkCore;
-using CST.Demo.Data.Ticketing;
+using System.Collections.Generic;
 
 namespace CST.Demo.Data
 {
@@ -10,27 +9,17 @@ namespace CST.Demo.Data
     using TicketVertex = Vertex<int, GraphEnum, TicketingEnum>;
     using TicketEdge = Edge<int, GraphEnum, TicketingEnum>;
 
-    public class TicketingContext : DemoContext, ISelfFactory<TicketingContext>
+    public partial class DemoContext
     {
-        const string SCHEMA = "ticketing";
-        public TicketingContext Create(DbContextOptions<TicketingContext> options)
-        {
-            return new TicketingContext(options);
-        }
+        public virtual DbSet<Vertex<int, GraphEnum, TicketingEnum>> TicketingVertex { get; set; }
+        public virtual DbSet<Edge<int, GraphEnum, TicketingEnum>> TicketingEdge { get; set; }
+        public virtual DbSet<Ticket> Tickets { get; set; }
+        public virtual DbSet<TTicketingHistory> TicketingHistory { get; set; }
+        public virtual DbSet<Commit> Commits { get; set; }
 
-        public TicketingContext()
-        {
-
-        }
-
-        public TicketingContext(DbContextOptions options) : base(options)
-        {
-        }
-        
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        protected void OnTicketingCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            modelBuilder.HasDefaultSchema(SCHEMA);
             modelBuilder.Entity<TTicketingHistory>()
                 .HasOne(moment => moment.Subject)
                 .WithOne(ticket => ticket.CurrentSubjectState)
@@ -76,7 +65,7 @@ namespace CST.Demo.Data
                         Graph = GraphEnum.Ticketing
                     }
                 });
-            
+
             modelBuilder.Entity<TicketEdge>()
                 .HasOne(edge => edge.Head)
                 .WithMany(vertex => vertex.InEdges);
@@ -137,11 +126,6 @@ namespace CST.Demo.Data
                     }
                 });
         }
-
-        public virtual DbSet<Vertex<int, GraphEnum, TicketingEnum>> TicketingVertex { get; set; }
-        public virtual DbSet<Edge<int, GraphEnum, TicketingEnum>> TicketingEdge { get; set; }
-        public virtual DbSet<Ticket> Tickets { get; set; }
-        public virtual DbSet<TTicketingHistory> TicketingHistory { get; set; }
-        public virtual DbSet<Commit> Commits { get; set; }
+        
     }
 }

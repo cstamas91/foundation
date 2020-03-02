@@ -2,7 +2,7 @@
 using CST.Common.Utils.StateMachineFeature;
 using CST.Demo.Ticketing.Controllers;
 using CST.Demo.Data;
-using CST.Demo.Data.Ticketing;
+using CST.Demo.Data.Models.Ticketing;
 using CST.Demo.Ticketing.Repositories;
 using CST.Demo.Ticketing.Services;
 using Microsoft.AspNetCore.Builder;
@@ -36,7 +36,7 @@ namespace CST.Demo.Ticketing
             this IServiceCollection services)
         {
             var (catalog, ds) = AssertEnvironmentVariables();
-            services.AddDbContext<TicketingContext>(builder =>
+            services.AddDbContext<DemoContext>(builder =>
             {
                 var connectionStringBuilder = new SqlConnectionStringBuilder()
                 {

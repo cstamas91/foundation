@@ -7,22 +7,21 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace CST.Demo.Ticketing.Migrations
+namespace CST.Demo.Data.Migrations
 {
-    [DbContext(typeof(TicketingContext))]
-    [Migration("20200302191714_Init")]
-    partial class Init
+    [DbContext(typeof(DemoContext))]
+    [Migration("20200302222558_Ticket_User")]
+    partial class Ticket_User
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasDefaultSchema("ticketing")
                 .HasAnnotation("ProductVersion", "3.1.2")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("CST.Common.Utils.StateMachineFeature.BaseClasses.Edge<int, CST.Demo.Ticketing.Data.GraphEnum, CST.Demo.Ticketing.Data.TicketingEnum>", b =>
+            modelBuilder.Entity("CST.Common.Utils.StateMachineFeature.BaseClasses.Edge<int, CST.Demo.Data.Models.Ticketing.GraphEnum, CST.Demo.Data.Models.Ticketing.TicketingEnum>", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -100,7 +99,7 @@ namespace CST.Demo.Ticketing.Migrations
                         });
                 });
 
-            modelBuilder.Entity("CST.Common.Utils.StateMachineFeature.BaseClasses.StateMachineSubjectMoment<int, CST.Demo.Ticketing.Data.GraphEnum, CST.Demo.Ticketing.Data.TicketingEnum, CST.Demo.Ticketing.Data.Ticket>", b =>
+            modelBuilder.Entity("CST.Common.Utils.StateMachineFeature.BaseClasses.StateMachineSubjectMoment<int, CST.Demo.Data.Models.Ticketing.GraphEnum, CST.Demo.Data.Models.Ticketing.TicketingEnum, CST.Demo.Data.Models.Ticketing.Ticket>", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -123,7 +122,7 @@ namespace CST.Demo.Ticketing.Migrations
                     b.ToTable("TicketingHistory");
                 });
 
-            modelBuilder.Entity("CST.Common.Utils.StateMachineFeature.BaseClasses.Vertex<int, CST.Demo.Ticketing.Data.GraphEnum, CST.Demo.Ticketing.Data.TicketingEnum>", b =>
+            modelBuilder.Entity("CST.Common.Utils.StateMachineFeature.BaseClasses.Vertex<int, CST.Demo.Data.Models.Ticketing.GraphEnum, CST.Demo.Data.Models.Ticketing.TicketingEnum>", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -181,7 +180,25 @@ namespace CST.Demo.Ticketing.Migrations
                         });
                 });
 
-            modelBuilder.Entity("CST.Demo.Ticketing.Data.Commit", b =>
+            modelBuilder.Entity("CST.Demo.Data.Models.Identity.User", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Password")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("CST.Demo.Data.Models.Ticketing.Commit", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -201,7 +218,7 @@ namespace CST.Demo.Ticketing.Migrations
                     b.ToTable("Commits");
                 });
 
-            modelBuilder.Entity("CST.Demo.Ticketing.Data.Ticket", b =>
+            modelBuilder.Entity("CST.Demo.Data.Models.Ticketing.Ticket", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -214,40 +231,52 @@ namespace CST.Demo.Ticketing.Migrations
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("UserId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Tickets");
                 });
 
-            modelBuilder.Entity("CST.Common.Utils.StateMachineFeature.BaseClasses.Edge<int, CST.Demo.Ticketing.Data.GraphEnum, CST.Demo.Ticketing.Data.TicketingEnum>", b =>
+            modelBuilder.Entity("CST.Common.Utils.StateMachineFeature.BaseClasses.Edge<int, CST.Demo.Data.Models.Ticketing.GraphEnum, CST.Demo.Data.Models.Ticketing.TicketingEnum>", b =>
                 {
-                    b.HasOne("CST.Common.Utils.StateMachineFeature.BaseClasses.Vertex<int, CST.Demo.Ticketing.Data.GraphEnum, CST.Demo.Ticketing.Data.TicketingEnum>", "Head")
+                    b.HasOne("CST.Common.Utils.StateMachineFeature.BaseClasses.Vertex<int, CST.Demo.Data.Models.Ticketing.GraphEnum, CST.Demo.Data.Models.Ticketing.TicketingEnum>", "Head")
                         .WithMany("InEdges")
                         .HasForeignKey("HeadId");
 
-                    b.HasOne("CST.Common.Utils.StateMachineFeature.BaseClasses.Vertex<int, CST.Demo.Ticketing.Data.GraphEnum, CST.Demo.Ticketing.Data.TicketingEnum>", "Tail")
+                    b.HasOne("CST.Common.Utils.StateMachineFeature.BaseClasses.Vertex<int, CST.Demo.Data.Models.Ticketing.GraphEnum, CST.Demo.Data.Models.Ticketing.TicketingEnum>", "Tail")
                         .WithMany("OutEdges")
                         .HasForeignKey("TailId");
                 });
 
-            modelBuilder.Entity("CST.Common.Utils.StateMachineFeature.BaseClasses.StateMachineSubjectMoment<int, CST.Demo.Ticketing.Data.GraphEnum, CST.Demo.Ticketing.Data.TicketingEnum, CST.Demo.Ticketing.Data.Ticket>", b =>
+            modelBuilder.Entity("CST.Common.Utils.StateMachineFeature.BaseClasses.StateMachineSubjectMoment<int, CST.Demo.Data.Models.Ticketing.GraphEnum, CST.Demo.Data.Models.Ticketing.TicketingEnum, CST.Demo.Data.Models.Ticketing.Ticket>", b =>
                 {
-                    b.HasOne("CST.Demo.Ticketing.Data.Ticket", "Subject")
+                    b.HasOne("CST.Demo.Data.Models.Ticketing.Ticket", "Subject")
                         .WithOne("CurrentSubjectState")
-                        .HasForeignKey("CST.Common.Utils.StateMachineFeature.BaseClasses.StateMachineSubjectMoment<int, CST.Demo.Ticketing.Data.GraphEnum, CST.Demo.Ticketing.Data.TicketingEnum, CST.Demo.Ticketing.Data.Ticket>", "SubjectId")
+                        .HasForeignKey("CST.Common.Utils.StateMachineFeature.BaseClasses.StateMachineSubjectMoment<int, CST.Demo.Data.Models.Ticketing.GraphEnum, CST.Demo.Data.Models.Ticketing.TicketingEnum, CST.Demo.Data.Models.Ticketing.Ticket>", "SubjectId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("CST.Common.Utils.StateMachineFeature.BaseClasses.Vertex<int, CST.Demo.Ticketing.Data.GraphEnum, CST.Demo.Ticketing.Data.TicketingEnum>", "Vertex")
+                    b.HasOne("CST.Common.Utils.StateMachineFeature.BaseClasses.Vertex<int, CST.Demo.Data.Models.Ticketing.GraphEnum, CST.Demo.Data.Models.Ticketing.TicketingEnum>", "Vertex")
                         .WithMany()
                         .HasForeignKey("VertexId");
                 });
 
-            modelBuilder.Entity("CST.Demo.Ticketing.Data.Commit", b =>
+            modelBuilder.Entity("CST.Demo.Data.Models.Ticketing.Commit", b =>
                 {
-                    b.HasOne("CST.Demo.Ticketing.Data.Ticket", null)
+                    b.HasOne("CST.Demo.Data.Models.Ticketing.Ticket", null)
                         .WithMany("RelatedCommits")
                         .HasForeignKey("TicketId");
+                });
+
+            modelBuilder.Entity("CST.Demo.Data.Models.Ticketing.Ticket", b =>
+                {
+                    b.HasOne("CST.Demo.Data.Models.Identity.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
                 });
 #pragma warning restore 612, 618
         }
