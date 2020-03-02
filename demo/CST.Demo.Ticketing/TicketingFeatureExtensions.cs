@@ -1,31 +1,47 @@
 ﻿using AutoMapper;
 using CST.Common.Utils.StateMachineFeature;
 using CST.Demo.Ticketing.Controllers;
-using CST.Demo.Ticketing.Data;
+using CST.Demo.Data;
+using CST.Demo.Data.Ticketing;
 using CST.Demo.Ticketing.Repositories;
 using CST.Demo.Ticketing.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Cors.Infrastructure;
-using Microsoft.AspNetCore.Internal;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Net.Http.Headers;
+using System;
 
 namespace CST.Demo.Ticketing
 {
     public static class TicketingFeatureExtensions
     {
         private const string CorsPolicyName = "TicketingFrontend";
-
-        public static IServiceCollection ConfigureTicketingFeature(this IServiceCollection services)
+        private const string InitialCatalogEnvKey = "Ticketing_InitialCatalog";
+        private const string DataSourceEnvKey = "Ticketing_DataSource";
+        private static (string catalog, string dataSource) AssertEnvironmentVariables()
         {
-            services.AddDbContext<StateMachineContext>(builder =>
+            var catalog = Environment.GetEnvironmentVariable(InitialCatalogEnvKey);
+            var ds = Environment.GetEnvironmentVariable(DataSourceEnvKey);
+            if (string.IsNullOrEmpty(catalog))
+                throw new Exception($"{InitialCatalogEnvKey} has to be set");
+            if (string.IsNullOrEmpty(ds))
+                throw new Exception($"{DataSourceEnvKey} has to be set");
+
+            return (catalog, ds);
+        }
+
+        public static IServiceCollection ConfigureTicketingFeature(
+            this IServiceCollection services)
+        {
+            var (catalog, ds) = AssertEnvironmentVariables();
+            services.AddDbContext<TicketingContext>(builder =>
             {
                 var connectionStringBuilder = new SqlConnectionStringBuilder()
                 {
-                    InitialCatalog = "StateMachine",
-                    DataSource = @"(localdb)\MSSQLLocalDB",
+                    InitialCatalog = catalog,
+                    DataSource = ds,
                     IntegratedSecurity = true,
                     MultipleActiveResultSets = true
                 };

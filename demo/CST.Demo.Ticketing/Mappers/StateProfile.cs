@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using CST.Common.Utils.StateMachineFeature.BaseClasses;
-using CST.Demo.Ticketing.Data;
+using CST.Demo.Data.Ticketing;
 using CST.Demo.Ticketing.Mappers.Converters;
 
 namespace CST.Demo.Ticketing.Mappers

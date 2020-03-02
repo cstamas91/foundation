@@ -2,8 +2,9 @@
 using CST.Common.Utils.Common;
 using CST.Common.Utils.StateMachineFeature.BaseClasses;
 using CST.Common.Utils.ViewModel;
+using CST.Demo.Data.Models.Identity;
 
-namespace CST.Demo.Ticketing.Data
+namespace CST.Demo.Data.Ticketing
 {
     public class Ticket : StateMachineSubject<int, GraphEnum, TicketingEnum, Ticket>, 
         IIdentifiable<int>, 
@@ -17,5 +18,6 @@ namespace CST.Demo.Ticketing.Data
         public string Description { get; set; }
         public ICollection<Commit> RelatedCommits { get; set; }
         public ICollection<Commit> GetDestinationCollection() => RelatedCommits;
+        public User User { get; set; }
     }
 }

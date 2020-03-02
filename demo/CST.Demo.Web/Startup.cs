@@ -27,7 +27,7 @@ namespace CST.Demo.Web
             services.AddHttpClient(Constants.TicketingHttpClientName)
                 .ConfigureHttpClient((provider, client) =>
                 {
-                    client.BaseAddress = new Uri("https://localhost:44376/api/");
+                    client.BaseAddress = new Uri("https://localhost:5001/api/");
                 });
             services.AddControllers()
                 .AddJsonOptions(options =>

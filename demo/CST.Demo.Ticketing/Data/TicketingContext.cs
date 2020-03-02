@@ -1,45 +1,36 @@
 ﻿using System.Collections.Generic;
+using CST.Common.Utils.Common.Data;
 using CST.Common.Utils.StateMachineFeature.BaseClasses;
-using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Design;
+using CST.Demo.Data.Ticketing;
 
-// ReSharper disable StringLiteralTypo
-
-namespace CST.Demo.Ticketing.Data
+namespace CST.Demo.Data
 {
     using TTicketingHistory = StateMachineSubjectMoment<int, GraphEnum, TicketingEnum, Ticket>;
     using TicketVertex = Vertex<int, GraphEnum, TicketingEnum>;
     using TicketEdge = Edge<int, GraphEnum, TicketingEnum>;
 
-    public class StateMachineContext : DbContext, IDesignTimeDbContextFactory<StateMachineContext>
+    public class TicketingContext : DemoContext, ISelfFactory<TicketingContext>
     {
-        public StateMachineContext CreateDbContext(string[] args)
+        const string SCHEMA = "ticketing";
+        public TicketingContext Create(DbContextOptions<TicketingContext> options)
         {
-            var connectionStringBuilder = new SqlConnectionStringBuilder()
-            {
-                InitialCatalog = "StateMachine",
-                DataSource = @"(localdb)\MSSQLLocalDB",
-                IntegratedSecurity = true,
-                MultipleActiveResultSets = true
-            };
-            var optionsBuilder = new DbContextOptionsBuilder<StateMachineContext>();
-            optionsBuilder.UseSqlServer(connectionStringBuilder.ConnectionString);
-            return new StateMachineContext(optionsBuilder.Options);
+            return new TicketingContext(options);
         }
 
-        public StateMachineContext()
+        public TicketingContext()
         {
-            
+
         }
 
-        public StateMachineContext(DbContextOptions<StateMachineContext> options) : base(options)
+        public TicketingContext(DbContextOptions options) : base(options)
         {
         }
         
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+            modelBuilder.HasDefaultSchema(SCHEMA);
             modelBuilder.Entity<TTicketingHistory>()
                 .HasOne(moment => moment.Subject)
                 .WithOne(ticket => ticket.CurrentSubjectState)

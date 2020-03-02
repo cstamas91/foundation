@@ -2,15 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using CST.Demo.Ticketing.Data;
+using CST.Demo.Data;
+using CST.Demo.Data.Ticketing;
 
 namespace CST.Demo.Ticketing.Repositories
 {
     public class TicketRepository
     {
-        private readonly StateMachineContext _context;
+        private readonly TicketingContext _context;
 
-        public TicketRepository(StateMachineContext context)
+        public TicketRepository(TicketingContext context)
         {
             _context = context;
         }

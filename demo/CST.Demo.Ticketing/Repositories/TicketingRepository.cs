@@ -1,15 +1,16 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using CST.Common.Utils.StateMachineFeature.BaseClasses;
-using CST.Demo.Ticketing.Data;
+using CST.Demo.Data.Ticketing;
+using CST.Demo.Data;
 
 namespace CST.Demo.Ticketing.Repositories
 {
     public class TicketingRepository : BaseStateMachineRepository<int, GraphEnum, TicketingEnum, Ticket>
     {
-        private readonly StateMachineContext _context;
+        private readonly TicketingContext _context;
 
-        public TicketingRepository(StateMachineContext context)
+        public TicketingRepository(TicketingContext context)
         {
             _context = context;
         }

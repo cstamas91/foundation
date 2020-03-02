@@ -1,0 +1,119 @@
+@page "/ticket/{TicketId:int}"
+
+@using System.Text.Json
+@using CST.Demo.Ticketing.Dtos
+@using CST.Common.Utils.ViewModel
+
+@inject IHttpClientFactory HttpClientFactory
+
+<style>
+    .container {
+        display: grid;
+        grid-template-columns: auto auto;
+        grid-template-areas: 
+            "headerleft headerright"
+            "title state"
+            "description commits";
+    }
+
+    .headerleft {
+        grid-area: headerleft;
+    }
+
+    .headerright {
+        grid-area: headerright;
+    }
+
+    .title {
+        grid-area: title;
+    }
+
+    .state {
+        grid-area: state;
+    }
+
+    .description {
+        grid-area: description
+    }
+
+    .commits {
+        grid-area: commits;
+    }
+</style>
+@if (_ticket != null)
+{
+    <div class="container form form-inline">
+        <h1 class="headerleft" >Ticket #@_ticket?.Id </h1>
+        <button class="btn btn-primary headerright">
+            Save changes
+        </button>
+        <div class="form-group title">
+            <label for="title">Title</label>
+            <input class="form-control" type="text" @bind="@_ticket.Title" >
+        </div>
+        <div class="form-group state">
+            <label for="state">State</label>
+            <select class="form-control" name="state" id="state" @bind="@_selectedState">
+                <option value="@_nullOption"></option>
+                @if (_states != null)
+                {
+                    @foreach(var selectable in _states)    
+                    {
+                        <option value="@selectable.Id" >@selectable.Name</option>
+                    }
+                }
+            </select>
+        </div>
+        <div class="form-group description">
+            <label for="description">Description</label>
+            <textarea class="form-control" @bind="@_ticket.Description">
+
+            </textarea>
+        </div>
+        <div class="form-group commits">
+            <ul class="list-group">
+                @foreach (var commit in _ticket.RelatedCommits)
+                {
+                    <li class="list-group-item">
+                        @commit.Item.Hash
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+}
+@code {
+        
+    [Parameter]
+    public int TicketId { get; set; }
+    private TicketDto _ticket;
+    private ICollection<Selectable<int>> _states = new List<Selectable<int>>();
+    private int? _nullOption = null;
+    private int? _selectedState { get; set; } = 0;
+    protected override async Task OnInitializedAsync()
+    {
+        var client = HttpClientFactory.CreateClient(Constants.TicketingHttpClientName);
+        _ticket = await InitTicket(client);
+        _states = await InitStates(client);
+    }
+
+    private async Task<TicketDto> InitTicket(HttpClient client)
+    {
+        var ticketResponse = await client.GetAsync($"ticketing?Id={TicketId}");
+        if (!ticketResponse.IsSuccessStatusCode)
+        {
+            throw new Exception();
+        }
+
+        var contentString = await ticketResponse.Content.ReadAsStringAsync();
+        return JsonSerializer.Deserialize<TicketDto>(contentString);
+    }
+
+    private async Task<List<Selectable<int>>> InitStates(HttpClient client)
+    {
+        var statesResponse = await client.GetAsync($"ticketing/states");
+        if (!statesResponse.IsSuccessStatusCode) return new List<Selectable<int>>();
+        var contentString = await statesResponse.Content.ReadAsStringAsync();
+        return JsonSerializer.Deserialize<List<Selectable<int>>>(contentString);
+    }
+}

@@ -3,7 +3,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using AutoMapper;
 using CST.Common.Utils;
-using CST.Demo.Ticketing.Data;
+using CST.Demo.Data.Ticketing;
 using CST.Demo.Ticketing.Dtos;
 
 namespace CST.Demo.Ticketing.Mappers.Converters

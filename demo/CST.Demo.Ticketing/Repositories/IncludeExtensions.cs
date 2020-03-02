@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 using CST.Common.Utils.StateMachineFeature.BaseClasses;
-using CST.Demo.Ticketing.Data;
+using CST.Demo.Data.Ticketing;
 using Microsoft.EntityFrameworkCore;
 
 namespace CST.Demo.Ticketing.Repositories
