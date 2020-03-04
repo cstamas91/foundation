@@ -1,0 +1,86 @@
+﻿@page "/tickets"
+
+@using CST.Demo.Ticketing.Dtos
+@using Services
+
+@inject NavigationManager Navigation
+@inject TicketingService TicketingService
+
+<style>
+    .add-new-ticket {
+        display: grid;
+        grid-template-columns: auto;
+        grid-template-areas: "text";
+    }
+
+    .add-new-ticket-text {
+        grid-area: text;
+        justify-self: center;
+    }
+
+    .ticket-list-item {
+        display: grid;
+        grid-template-columns: 40px auto 15%;
+        grid-template-areas: "id title state";
+        column-gap: 5px;
+    }
+
+    .ticket-list-item-id {
+        grid-area: id;
+        justify-self: right;
+    }
+
+    .ticket-list-item-title {
+        grid-area: title;
+        justify-self: left;
+    }
+
+    .ticket-list-item-state {
+        grid-area: state;
+        justify-self: center;
+    }
+</style>
+
+<h1>Tickets</h1>
+
+<div class="list-group">
+    <div class="list-group-item list-group-item-action add-new-ticket" @onclick="(() => NewTicket())">
+        <div class="add-new-ticket-text" >
+            New ticket
+        </div>
+    </div>
+    @foreach (var ticket in model)
+    {
+        <div class="list-group-item list-group-item-action ticket-list-item"
+             @onclick="(() => OnClick(ticket.Id))">
+            <div class="ticket-list-item-id">
+                @ticket.Id
+            </div>
+            <div class="ticket-list-item-title">
+                @ticket.Title
+            </div>
+            <div class="ticket-list-item-state">
+                @ticket.State
+            </div>
+        </div>
+    }
+</div>
+
+@code {
+    public ICollection<TicketListDto> model { get; set; } = new List<TicketListDto>();
+
+    private void OnClick(int id)
+    {
+        Navigation.NavigateTo($"/ticket/{id}");
+    }
+
+    private void NewTicket()
+    {
+        Navigation.NavigateTo($"/ticket/-1");
+    }
+
+    protected override void OnInitialized()
+    {
+        model = TicketingService.GetTickets(new TicketFilter()).ToList();
+    }
+}

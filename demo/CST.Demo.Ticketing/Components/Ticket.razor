@@ -1,0 +1,127 @@
+﻿@page "/ticket/{TicketId:int}"
+
+@using Services
+@using CST.Common.Utils.ViewModel
+@using CST.Demo.Ticketing.Dtos
+
+@inject TicketingService TicketingService
+
+<style>
+    .container {
+        display: grid;
+        grid-template-columns: auto auto;
+        grid-template-areas: "headerleft headerright" "title state" "description commits";
+    }
+
+    .leftHeader {
+        grid-area: headerleft;
+    }
+
+    .rightHeader {
+        grid-area: headerright;
+    }
+
+    .title {
+        grid-area: title;
+    }
+
+    .state {
+        grid-area: state;
+    }
+
+    .description {
+        grid-area: description
+    }
+
+    .commits {
+        grid-area: commits;
+    }
+</style>
+@if (model != null)
+{
+    <div class="container form form-inline">
+        <h1 class="leftHeader">Ticket #@model?.Id </h1>
+        <button class="btn btn-primary rightHeader" @onclick="(() => OnSave())">
+            Save changes
+        </button>
+        <div class="form-group title">
+            <label for="title">Title</label>
+            <input class="form-control"
+                   type="text"
+                   @bind="@model.Title"
+                   placeholder="@TitlePlaceholder" />
+        </div>
+        <div class="form-group state">
+            <label for="state">State</label>
+            <select class="form-control"
+                    name="state"
+                    id="state"
+                    @bind="@SelectedTransition"
+                    disabled="@StateTransitionDisabled">
+                <option value=""></option>
+                @if (Transitions != null)
+                {
+                    @foreach (var selectable in Transitions)
+                    {
+                        <option value="@selectable.Id">@selectable.Name</option>
+                    }
+                }
+            </select>
+        </div>
+        <div class="form-group description">
+            <label for="description">Description</label>
+            <textarea 
+                      class="form-control" 
+                      @bind="@model.Description"
+                      placeholder="@DescriptionPlaceholder">
+
+            </textarea>
+        </div>
+        @if (TicketId < 0)
+        {
+            <div class="form-group commits">
+                <ul class="list-group">
+                    @foreach (var commit in model.RelatedCommits)
+                    {
+                        <li class="list-group-item">
+                            @commit.Item.Hash
+                        </li>
+                    }
+                </ul>
+            </div>
+        }
+    </div>
+}
+
+@code {
+    [Parameter]
+    public int TicketId { get; set; }
+    public int? SelectedTransition { get; set; } = 0;
+    public TicketDto model { get; set; }
+    public ICollection<Selectable<int>> Transitions { get; set; } = new List<Selectable<int>>();
+    public bool StateTransitionDisabled => TicketId < 0;
+
+    protected string TitlePlaceholder = CreateTicketDto.TitlePlaceholder;
+    protected string DescriptionPlaceholder = CreateTicketDto.DescriptionPlaceholder;
+
+    override protected void OnInitialized()
+    {
+        Transitions = TicketingService.GetTicketTransitions(TicketId >= 0 ? TicketId : default(int?)).ToList();
+        model = TicketId >= 0
+            ? TicketingService.GetTicket(TicketId)
+            : new TicketDto { RelatedCommits = new List<UpdateableItem<CommitDto>>() };
+    }
+
+    protected void OnSave()
+    {
+        if (TicketId < 0)
+        {
+            TicketingService.CreateTicket(model);
+        }
+        else
+        {
+            TicketingService.UpdateTicket(model, SelectedTransition);
+        }
+
+    }
+}

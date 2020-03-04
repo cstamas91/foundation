@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using AutoMapper;
 using CST.Common.Utils.Common;
+using CST.Common.Utils.ViewModel;
 using CST.Demo.Data.Models.Ticketing;
 using CST.Demo.Ticketing.Dtos;
 using CST.Demo.Ticketing.Repositories;
@@ -73,5 +74,12 @@ namespace CST.Demo.Ticketing.Services
 
             return _mapper.Map<TicketDto>(ticket);
         }
+        
+        public IEnumerable<Selectable<int>> GetTicketStates() =>
+            _stateMachineService.GetStates();
+
+        public IEnumerable<Selectable<int>> GetTicketTransitions(int? ticketId = null) => ticketId.HasValue
+            ? _stateMachineService.GetTransitionsForSubject(ticketId.Value)
+            : _stateMachineService.GetInitialTransitions();
     }
 }

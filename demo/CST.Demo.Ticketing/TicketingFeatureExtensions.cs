@@ -12,9 +12,17 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Net.Http.Headers;
 using System;
+using CST.Common.Utils.Razor;
 
 namespace CST.Demo.Ticketing
 {
+    public struct TicketingFeatureOptions
+    {
+        public bool AddHttpClient { get; set; }
+        public string HttpClientBaseAddress { get; set; }
+        public string HttpClientName { get; set; }
+    }
+    
     public static class TicketingFeatureExtensions
     {
         private const string CorsPolicyName = "TicketingFrontend";
@@ -33,7 +41,8 @@ namespace CST.Demo.Ticketing
         }
 
         public static IServiceCollection ConfigureTicketingFeature(
-            this IServiceCollection services)
+            this IServiceCollection services,
+            TicketingFeatureOptions? ticketingOptions = null)
         {
             var (catalog, ds) = AssertEnvironmentVariables();
             services.AddDbContext<DemoContext>(builder =>
@@ -67,6 +76,23 @@ namespace CST.Demo.Ticketing
                     CorsPolicyName,
                     ConfigureCorsPolicy);
             });
+            services.AddScoped<IComponentSource, TicketingRazorAssemblyProvider>();
+
+            return !ticketingOptions.HasValue ? services : ApplyOptions(services, ticketingOptions.Value);
+        }
+
+        private static IServiceCollection ApplyOptions(
+            IServiceCollection services, 
+            TicketingFeatureOptions options)
+        {
+            if (options.AddHttpClient)
+            {
+                services.AddHttpClient(options.HttpClientName)
+                    .ConfigureHttpClient((provider, client) =>
+                    {
+                        client.BaseAddress = new Uri(options.HttpClientBaseAddress);
+                    });
+            }
 
             return services;
         }

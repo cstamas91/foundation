@@ -23,53 +23,37 @@ namespace CST.Demo.Ticketing.Repositories
             return subjectMoment;
         }
 
-        public override IEnumerable<Vertex<int, GraphEnum, TicketingEnum>> GetVertices()
-        {
-            return _context.TicketingVertex
+        public override IEnumerable<Vertex<int, GraphEnum, TicketingEnum>> GetVertices() => _context.TicketingVertex
                 .DefaultIncludes()
                 .AsEnumerable();
-        }
 
-        public override IEnumerable<Edge<int, GraphEnum, TicketingEnum>> GetEdges()
-        {
-            return _context.TicketingEdge
+        public override IEnumerable<Edge<int, GraphEnum, TicketingEnum>> GetEdges() => _context.TicketingEdge
                 .DefaultIncludes()
                 .AsEnumerable();
-        }
 
-        public override IEnumerable<Edge<int, GraphEnum, TicketingEnum>> GetEdges(TicketingEnum previousState)
-        {
-            return _context.TicketingEdge
+        public override IEnumerable<Edge<int, GraphEnum, TicketingEnum>> GetEdges(TicketingEnum previousState) => _context.TicketingEdge
                 .DefaultIncludes()
                 .Where(edge => edge.Tail.VertexEnum == previousState);
-        }
 
-        public override Vertex<int, GraphEnum, TicketingEnum> GetVertex(TicketingEnum stateEnum)
-        {
-            return _context.TicketingVertex
+        public override Vertex<int, GraphEnum, TicketingEnum> GetVertex(TicketingEnum stateEnum) => _context.TicketingVertex
                 .DefaultIncludes()
                 .FirstOrDefault(vertex => vertex.VertexEnum == stateEnum);
-        }
 
-        public override Vertex<int, GraphEnum, TicketingEnum> GetVertex(int currentStateId)
-        {
-            return _context.TicketingVertex
+        public override Vertex<int, GraphEnum, TicketingEnum> GetVertex(int currentStateId) => _context.TicketingVertex
                 .DefaultIncludes()
                 .FirstOrDefault(vertex => vertex.Id == currentStateId);
-        }
 
-        public override Edge<int, GraphEnum, TicketingEnum> GetEdge(int transitionId)
-        {
-            return _context.TicketingEdge
+        public override Edge<int, GraphEnum, TicketingEnum> GetEdge(int transitionId) => _context.TicketingEdge
                 .DefaultIncludes()
                 .FirstOrDefault(edge => edge.Id == transitionId);
-        }
 
-        public override Vertex<int, GraphEnum, TicketingEnum> GetRootVertex()
-        {
-            return _context.TicketingVertex
+        public override Vertex<int, GraphEnum, TicketingEnum> GetRootVertex() => _context.TicketingVertex
                 .DefaultIncludes()
                 .FirstOrDefault(vertex => vertex.VertexEnum == TicketingEnum.Open);
-        }
+
+        public override Ticket GetSubject(int subjectId) => 
+            _context.Tickets
+                .DefaultIncludes()
+                .FirstOrDefault(ticket => ticket.Id == subjectId);
     }
 }

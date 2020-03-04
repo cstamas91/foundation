@@ -1,4 +1,3 @@
-using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -23,12 +22,10 @@ namespace CST.Demo.Web
         {
             services.AddRazorPages();
             services.AddServerSideBlazor();
-            services.ConfigureTicketingFeature();
-            services.AddHttpClient(Constants.TicketingHttpClientName)
-                .ConfigureHttpClient((provider, client) =>
-                {
-                    client.BaseAddress = new Uri("https://localhost:5001/api/");
-                });
+            services.ConfigureTicketingFeature(new TicketingFeatureOptions
+            {
+                AddHttpClient = false,
+            });
             services.AddControllers()
                 .AddJsonOptions(options =>
                 {
@@ -67,7 +64,7 @@ namespace CST.Demo.Web
             {
                 endpoints.MapBlazorHub();
                 endpoints.MapFallbackToPage("/_Host");
-                endpoints.MapControllers();
+                //endpoints.MapControllers();
             });
         }
     }

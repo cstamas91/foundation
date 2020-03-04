@@ -1,4 +1,8 @@
-﻿using CST.Common.Utils.StateMachineFeature.BaseClasses;
+﻿using System.Collections.Generic;
+using System.Linq;
+using CST.Common.Utils.StateMachineFeature.BaseClasses;
+using CST.Common.Utils.StateMachineFeature.ViewModel;
+using CST.Common.Utils.ViewModel;
 using CST.Demo.Data.Models.Ticketing;
 using CST.Demo.Ticketing.Repositories;
 
@@ -38,5 +42,7 @@ namespace CST.Demo.Ticketing.Services
             StateMachineSubjectMoment<int, GraphEnum, TicketingEnum, Ticket> subjectState)
         {
         }
+        
+        
     }
 }

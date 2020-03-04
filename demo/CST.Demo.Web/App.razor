@@ -1,4 +1,10 @@
-﻿<Router AppAssembly="@typeof(Program).Assembly">
+﻿@using CST.Common.Utils.Razor
+
+@inject IEnumerable<IComponentSource> AdditionalAssemblyProviders
+
+<Router 
+        AppAssembly="@typeof(Program).Assembly"
+        AdditionalAssemblies="AdditionalAssemblyProviders.Select(p => p.Assembly)">
     <Found Context="routeData">
         <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
     </Found>
