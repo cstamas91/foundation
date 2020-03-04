@@ -25,7 +25,7 @@ namespace CST.Common.Utils.StateMachineFeature
         public IActionResult GetTransitions([FromQuery] TKey? currentStateId)
         {
             return Ok(currentStateId.HasValue 
-                ? _stateMachineMetaService.GetTransitions(currentStateId.Value) 
+                ? _stateMachineMetaService.GetTransitionsFromState(currentStateId.Value) 
                 : _stateMachineMetaService.GetInitialTransitions());
         }
     }

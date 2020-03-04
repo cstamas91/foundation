@@ -141,7 +141,8 @@ namespace CST.Common.Utils.StateMachineFeature
 
         private void AddStateMachineMetaService()
         {
-            Services.AddScoped<IStateMachineMetaService<T1>, StateMachineMetaService<T1, T2, T3, T5, T4>>();
+            Services.AddScoped<IStateMachineMetaService<T1>>(
+                serviceProvider => serviceProvider.GetRequiredService<T6>());
             MvcCoreBuilder.AddMvcOptions(o =>
                 {
                     o.Conventions.Add(new StateMachineControllerNameConvention<T1, T4>(SubjectControllerName));
