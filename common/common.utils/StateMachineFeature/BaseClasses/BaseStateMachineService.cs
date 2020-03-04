@@ -2,10 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using CST.Common.Utils.StateMachineFeature.Exceptions;
+using CST.Common.Utils.StateMachineFeature.ViewModel;
+using CST.Common.Utils.ViewModel;
 
 namespace CST.Common.Utils.StateMachineFeature.BaseClasses
 {
-    public abstract class BaseStateMachineService<TKey, TGraphEnum, TVertexEnum, TSubject, TRepository>
+    public abstract class BaseStateMachineService<TKey, TGraphEnum, TVertexEnum, TSubject, TRepository> : 
+        IStateMachineMetaService<TKey> 
         where TKey : struct, IEquatable<TKey>
         where TGraphEnum : struct, IConvertible
         where TVertexEnum : struct, IConvertible
@@ -116,6 +119,40 @@ namespace CST.Common.Utils.StateMachineFeature.BaseClasses
             }
 
             throw new VertexNotConnectedToEdgeException(vertex.Name, erroringEdge.Name);
+        }
+
+        public IEnumerable<Selectable<TKey>> GetStates()
+        {
+            return Repository
+                .GetVertices()
+                .Select(Selectable<TKey>.Create);
+        }
+
+        public IEnumerable<Selectable<TKey>> GetInitialTransitions()
+        {
+            return Repository
+                .GetRootVertex()
+                .OutEdges
+                .Select(Selectable<TKey>.Create);
+
+        }
+
+        public IEnumerable<Selectable<TKey>> GetTransitionsFromState(TKey currentStateId)
+        {
+            return Repository
+                .GetVertex(currentStateId)
+                .OutEdges
+                .Select(Selectable<TKey>.Create);
+        }
+
+        public IEnumerable<Selectable<TKey>> GetTransitionsForSubject(TKey subjectId)
+        {
+            return Repository
+                .GetSubject(subjectId)
+                .CurrentSubjectState
+                .Vertex
+                .OutEdges
+                .Select(Selectable<TKey>.Create);
         }
     }
 }

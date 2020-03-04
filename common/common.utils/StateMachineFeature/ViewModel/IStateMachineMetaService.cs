@@ -10,6 +10,7 @@ namespace CST.Common.Utils.StateMachineFeature.ViewModel
     {
         IEnumerable<Selectable<TKey>> GetStates();
         IEnumerable<Selectable<TKey>> GetInitialTransitions();
-        IEnumerable<Selectable<TKey>> GetTransitions(TKey currentStateId);
+        IEnumerable<Selectable<TKey>> GetTransitionsFromState(TKey currentStateId);
+        IEnumerable<Selectable<TKey>> GetTransitionsForSubject(TKey subjectId);
     }
 }

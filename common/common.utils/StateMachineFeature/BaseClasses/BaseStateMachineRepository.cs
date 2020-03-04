@@ -18,5 +18,6 @@ namespace CST.Common.Utils.StateMachineFeature.BaseClasses
         public abstract Vertex<TKey, TGraphEnum, TVertexEnum> GetVertex(TKey currentStateId);
         public abstract Edge<TKey, TGraphEnum, TVertexEnum> GetEdge(TKey transitionId);
         public abstract Vertex<TKey, TGraphEnum, TVertexEnum> GetRootVertex();
+        public abstract TSubject GetSubject(TKey subjectId);
     }
 }
