@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using CST.Common.Utils.StateMachineFeature.BaseClasses;
 using CST.Demo.Data.Models.Ticketing;
 using CST.Demo.Data;
+using CST.Common.Utils.StateMachineFeature.Services;
+using CST.Common.Utils.StateMachineFeature.Abstraction;
 
 namespace CST.Demo.Ticketing.Repositories
 {

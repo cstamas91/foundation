@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using CST.Common.Utils.StateMachineFeature.BaseClasses;
+using CST.Common.Utils.StateMachineFeature.Abstraction;
 using CST.Demo.Data.Models.Ticketing;
 
 namespace CST.Demo.Ticketing.Mappers.Converters

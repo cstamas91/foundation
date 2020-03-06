@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace CST.Demo.Data.Models.Identity
+﻿namespace CST.Demo.Data.Models.Identity
 {
     public class User
     {

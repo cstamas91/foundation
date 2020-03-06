@@ -12,7 +12,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Net.Http.Headers;
 using System;
-using CST.Common.Utils.Razor;
+using CST.Common.Utils.Razor.Abstraction;
+using CST.Common.Utils.StateMachineFeature.FeatureBuilder;
 
 namespace CST.Demo.Ticketing
 {
@@ -58,17 +59,14 @@ namespace CST.Demo.Ticketing
             });
             services.AddScoped<TicketingService>();
             services.AddScoped<TicketRepository>();
-            services.AddStateMachineFeature(builder =>
-            {
-                builder
-                    .WithKeyType<int>()
-                    .WithGraphEnumType<GraphEnum>()
-                    .WithVertexEnumType<TicketingEnum>()
-                    .WithSubjectType<Ticket>(nameof(TicketingController).Replace("Controller", string.Empty))
-                    .WithRepositoryType<TicketingRepository>()
-                    .WithStateMachineService<TicketingStateMachineService>()
-                    .Build();
-            });
+            services.AddStateMachineFeature()
+                .WithTypes<int, TicketingEnum, GraphEnum, Ticket>()
+                .WithRepository<TicketingRepository>()
+                .WithService<TicketingStateMachineService>(new FeatureOptions
+                {
+                    SubjectControllerName = nameof(TicketingController)
+                    .Replace("Controller", string.Empty)
+                });
             services.AddAutoMapper(typeof(TicketingFeatureExtensions).Assembly);
             services.AddCors(options =>
             {

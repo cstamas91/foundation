@@ -1,5 +1,5 @@
 ﻿using System.Linq;
-using CST.Common.Utils.StateMachineFeature.BaseClasses;
+using CST.Common.Utils.StateMachineFeature.Abstraction;
 using CST.Demo.Data.Models.Ticketing;
 using Microsoft.EntityFrameworkCore;
 

@@ -1,8 +1,5 @@
-﻿using CST.Common.Utils.Razor;
-using System;
-using System.Collections.Generic;
+﻿using CST.Common.Utils.Razor.Abstraction;
 using System.Reflection;
-using System.Text;
 
 namespace CST.Demo.Ticketing
 {

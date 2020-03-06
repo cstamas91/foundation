@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using CST.Common.Utils.Common;
-using CST.Common.Utils.StateMachineFeature.BaseClasses;
+using CST.Common.Utils.StateMachineFeature.Abstraction;
 using CST.Common.Utils.ViewModel;
 using CST.Demo.Data.Models.Identity;
 

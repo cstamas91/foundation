@@ -1,8 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using CST.Common.Utils.StateMachineFeature.BaseClasses;
-using CST.Common.Utils.StateMachineFeature.ViewModel;
-using CST.Common.Utils.ViewModel;
+﻿using CST.Common.Utils.StateMachineFeature.Abstraction;
+using CST.Common.Utils.StateMachineFeature.Services;
 using CST.Demo.Data.Models.Ticketing;
 using CST.Demo.Ticketing.Repositories;
 

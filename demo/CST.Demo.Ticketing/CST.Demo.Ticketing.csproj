@@ -2,8 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
     <RazorLangVersion>3.0</RazorLangVersion>
+    <LangVersion>8</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
@@ -31,8 +31,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\common\common.utils.razor\CST.Common.Utils.Razor.csproj" />
     <ProjectReference Include="..\..\common\common.utils\CST.Common.Utils.csproj" />
-    <ProjectReference Include="..\..\common\CST.Common.Utils.Razor\CST.Common.Utils.Razor.csproj" />
     <ProjectReference Include="..\CST.Demo.Data\CST.Demo.Data.csproj" />
   </ItemGroup>
 

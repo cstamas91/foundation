@@ -1,4 +1,4 @@
-﻿using CST.Common.Utils.StateMachineFeature.BaseClasses;
+﻿using CST.Common.Utils.StateMachineFeature.Abstraction;
 using CST.Demo.Data.Models.Ticketing;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
