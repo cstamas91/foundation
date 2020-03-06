@@ -4,7 +4,7 @@ using System.Reflection;
 using Microsoft.AspNetCore.Mvc.ApplicationParts;
 using Microsoft.AspNetCore.Mvc.Controllers;
 
-namespace CST.Common.Utils.StateMachineFeature
+namespace CST.Common.Utils.StateMachineFeature.FeatureBuilder
 {
     internal class StateMachineFeatureProvider<TKey, TSubject> : IApplicationFeatureProvider<ControllerFeature> 
         where TKey : struct, IEquatable<TKey>

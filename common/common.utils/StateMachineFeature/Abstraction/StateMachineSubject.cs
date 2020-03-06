@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace CST.Common.Utils.StateMachineFeature.BaseClasses
+namespace CST.Common.Utils.StateMachineFeature.Abstraction
 {
-    public abstract class StateMachineSubject<TKey, TGraphEnum, TVertexEnum, TSubject>
+    public abstract class StateMachineSubject<TKey, TGraphEnum, TVertexEnum, TSubject> 
         where TKey : struct, IEquatable<TKey>
         where TGraphEnum : struct, IConvertible
         where TVertexEnum : struct, IConvertible

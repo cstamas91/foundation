@@ -1,21 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using CST.Common.Utils.StateMachineFeature.Abstraction;
 using CST.Common.Utils.StateMachineFeature.Exceptions;
 using CST.Common.Utils.StateMachineFeature.ViewModel;
 using CST.Common.Utils.ViewModel;
 
-namespace CST.Common.Utils.StateMachineFeature.BaseClasses
+namespace CST.Common.Utils.StateMachineFeature.Services
 {
-    public abstract class BaseStateMachineService<TKey, TGraphEnum, TVertexEnum, TSubject, TRepository> : 
-        IStateMachineMetaService<TKey> 
-        where TKey : struct, IEquatable<TKey>
+    public abstract class BaseStateMachineService<TKey, TGraphEnum, TVertexEnum, TSubject, TRepository> :
+        IStateMachineMetaService<TKey>, IStateMachineService<TKey, TGraphEnum, TVertexEnum, TSubject> where TKey : struct, IEquatable<TKey>
         where TGraphEnum : struct, IConvertible
         where TVertexEnum : struct, IConvertible
         where TSubject : StateMachineSubject<TKey, TGraphEnum, TVertexEnum, TSubject>, new()
         where TRepository : BaseStateMachineRepository<TKey, TGraphEnum, TVertexEnum, TSubject>
     {
-        // ReSharper disable once MemberCanBePrivate.Global
         protected readonly TRepository Repository;
 
         protected BaseStateMachineService(TRepository repository)
@@ -23,7 +22,6 @@ namespace CST.Common.Utils.StateMachineFeature.BaseClasses
             Repository = repository;
         }
 
-        // ReSharper disable once MemberCanBeProtected.Global
         public abstract TGraphEnum Graph { get; }
         protected abstract void PreInitializeSubject(TSubject subject);
         protected abstract void PostInitializeSubject(TSubject subject);
@@ -42,13 +40,11 @@ namespace CST.Common.Utils.StateMachineFeature.BaseClasses
             return InitializeSubject(rootVertex.VertexEnum);
         }
 
-        // ReSharper disable once MemberCanBePrivate.Global
         public TSubject InitializeSubject(TVertexEnum initialVertexEnum)
         {
             return InitializeSubject(new TSubject(), initialVertexEnum);
         }
 
-        // ReSharper disable once MemberCanBePrivate.Global
         public TSubject InitializeSubject(TSubject subject, TVertexEnum initialVertexEnum)
         {
             PreInitializeSubject(subject);
@@ -70,7 +66,6 @@ namespace CST.Common.Utils.StateMachineFeature.BaseClasses
         protected abstract void PostStepSubjectState(
             StateMachineSubjectMoment<TKey, TGraphEnum, TVertexEnum, TSubject> subjectState);
 
-        // ReSharper disable once MemberCanBePrivate.Global
         public TSubject StepSubject(TSubject subject, TKey edgeId)
         {
             PreStepSubject(subject, edgeId);
@@ -79,7 +74,7 @@ namespace CST.Common.Utils.StateMachineFeature.BaseClasses
             subject.CurrentSubjectState =
                 new StateMachineSubjectMoment<TKey, TGraphEnum, TVertexEnum, TSubject>
                 {
-                    Subject = subject, 
+                    Subject = subject,
                     Vertex = edge.Head
                 };
             Repository.AddSubjectMoment(subject.CurrentSubjectState);
@@ -106,7 +101,7 @@ namespace CST.Common.Utils.StateMachineFeature.BaseClasses
         }
 
         private Edge<TKey, TGraphEnum, TVertexEnum> EnsureEdge(
-            Vertex<TKey, TGraphEnum, TVertexEnum> vertex, 
+            Vertex<TKey, TGraphEnum, TVertexEnum> vertex,
             TKey edgeId)
         {
             var resultEdge = vertex.OutEdges.FirstOrDefault(edge => edge.Id.Equals(edgeId));
@@ -120,6 +115,8 @@ namespace CST.Common.Utils.StateMachineFeature.BaseClasses
 
             throw new VertexNotConnectedToEdgeException(vertex.Name, erroringEdge.Name);
         }
+
+        #region IStateMachineMetaService
 
         public IEnumerable<Selectable<TKey>> GetStates()
         {
@@ -154,5 +151,6 @@ namespace CST.Common.Utils.StateMachineFeature.BaseClasses
                 .OutEdges
                 .Select(Selectable<TKey>.Create);
         }
+        #endregion IStateMachineMetaService
     }
 }

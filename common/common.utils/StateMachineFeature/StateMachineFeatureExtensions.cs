@@ -1,19 +1,14 @@
 ﻿using System;
-using CST.Common.Utils.StateMachineFeature.BaseClasses;
-using CST.Common.Utils.StateMachineFeature.ViewModel;
+using CST.Common.Utils.StateMachineFeature.FeatureBuilder;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace CST.Common.Utils.StateMachineFeature
 {
     public static class StateMachineFeatureExtensions
     {
-        public static IServiceCollection AddStateMachineFeature(
-            this IServiceCollection services,
-            Action<StateMachineFeatureBuilder> buildAction)
+        public static IStateMachineFeatureBuilder AddStateMachineFeature(this IServiceCollection services)
         {
-            var builder = new StateMachineFeatureBuilder(services);
-            buildAction(builder);
-            return services;
+            return new StateMachineFeatureBuilder(services);
         }
     }
 }

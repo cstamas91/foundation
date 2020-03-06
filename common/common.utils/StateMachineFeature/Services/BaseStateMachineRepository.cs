@@ -1,7 +1,8 @@
-﻿using System;
+﻿using CST.Common.Utils.StateMachineFeature.Abstraction;
+using System;
 using System.Collections.Generic;
 
-namespace CST.Common.Utils.StateMachineFeature.BaseClasses
+namespace CST.Common.Utils.StateMachineFeature.Services
 {
     public abstract class BaseStateMachineRepository<TKey, TGraphEnum, TVertexEnum, TSubject>
         where TKey : struct, IEquatable<TKey>
