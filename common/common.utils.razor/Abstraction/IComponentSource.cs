@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace CST.Common.Utils.Razor
+namespace CST.Common.Utils.Razor.Abstraction
 {
     public interface IComponentSource
     {
