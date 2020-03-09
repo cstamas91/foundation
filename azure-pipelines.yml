@@ -50,13 +50,13 @@ steps:
       $ciBuilds = ("IndividualCI", "BatchedCI", "PullRequest");
       switch -Exact ('$(Build.Reason)') {
         { $ciBuilds -contains $_ } {
-          setVarAndLog("nugetVersion", "$(major).$(minor).$(patch)-$(ciTag)");
-          setVarAndLog("producePackage", "true");
+          setVarAndLog "nugetVersion" "$(major).$(minor).$(patch)-$(ciTag)";
+          setVarAndLog "producePackage" "true";
         }
 
         Default {
-          setVarAndLog("nugetVersion", "");
-          setVarAndLog("producePackage", "false");
+          setVarAndLog "nugetVersion" "";
+          setVarAndLog "producePackage" "false";
         }
       }
 
