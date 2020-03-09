@@ -43,7 +43,7 @@ steps:
     targetType: inline
     script: |
       function setVarAndLog ($var, $val) {
-        Write-Host "setting $var = $val";
+        Write-Host "setting $var to $val";
         Write-Host "##vso[task.setvariable variable=$var]$val";
       }
 
