@@ -5,7 +5,12 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
 
 trigger:
-- master
+  branches:
+    include:
+      - develop
+      - features/*
+    exclude:
+      - master
 
 pool:
   vmImage: 'windows-latest'
@@ -67,6 +72,7 @@ steps:
 
 - task: DotNetCoreCLI@2
   displayName: 'Push packages to libs feed'
+  condition: eq(variables.producePackage, 'true')
   inputs:
     command: 'push'
     packagesToPush: '$(Build.ArtifactStagingDirectory)/*.nupkg'
