@@ -58,7 +58,7 @@ steps:
 
 - task: NuGetCommand@2
   displayName: 'Pack all projects into nuget'
-  condition: eq($(producePackage), 'true')
+  condition: eq(variables.producePackage, 'true')
   inputs:
     command: 'pack'
     packagesToPack: '**/*.csproj'
