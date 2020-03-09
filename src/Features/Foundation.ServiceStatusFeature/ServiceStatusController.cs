@@ -1,9 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.AspNetCore.Mvc;
 
-namespace Foundation.Core.ServiceStatusFeature
+namespace Foundation.ServiceStatusFeature
 {
     [ApiController, Route("api/[controller]")]
     internal class ServiceStatusController : ControllerBase
@@ -18,7 +18,7 @@ namespace Foundation.Core.ServiceStatusFeature
         [HttpGet]
         public string Get()
         {
-            string Aggregator(string state, IServiceStatusSource current)
+            static string Aggregator(string state, IServiceStatusSource current)
             {
                 return string.Join(Environment.NewLine, state, current.GetStatus());
             }

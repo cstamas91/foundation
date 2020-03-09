@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Foundation.Core.StateMachineFeature.Abstraction
+namespace Foundation.StateMachineFeature.Abstraction
 {
     public class StateMachineSubjectMoment<TKey, TGraphEnum, TVertexEnum, TSubject>
         where TKey : struct, IEquatable<TKey>

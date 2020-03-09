@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using Foundation.Core.StateMachineFeature.Abstraction;
+using Foundation.StateMachineFeature.Abstraction;
 
-namespace Foundation.Core.StateMachineFeature.Services
+namespace Foundation.StateMachineFeature.Services
 {
     public abstract class BaseStateMachineRepository<TKey, TGraphEnum, TVertexEnum, TSubject>
         where TKey : struct, IEquatable<TKey>

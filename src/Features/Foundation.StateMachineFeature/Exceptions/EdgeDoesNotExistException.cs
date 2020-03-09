@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Foundation.Core.StateMachineFeature.Exceptions
+namespace Foundation.StateMachineFeature.Exceptions
 {
     public class EdgeDoesNotExistException<TKey, TVertexEnum> : Exception 
         where TKey : IEquatable<TKey>

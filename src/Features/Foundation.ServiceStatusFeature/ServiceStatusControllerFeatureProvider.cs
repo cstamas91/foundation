@@ -1,9 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc.ApplicationParts;
-using Microsoft.AspNetCore.Mvc.Controllers;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Reflection;
+using Microsoft.AspNetCore.Mvc.ApplicationParts;
+using Microsoft.AspNetCore.Mvc.Controllers;
 
-namespace Foundation.Core.ServiceStatusFeature
+namespace Foundation.ServiceStatusFeature
 {
     internal class ServiceStatusControllerFeatureProvider : IApplicationFeatureProvider<ControllerFeature>
     {

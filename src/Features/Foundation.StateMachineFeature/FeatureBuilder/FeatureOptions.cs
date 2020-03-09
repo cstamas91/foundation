@@ -1,4 +1,4 @@
-﻿namespace Foundation.Core.StateMachineFeature.FeatureBuilder
+﻿namespace Foundation.StateMachineFeature.FeatureBuilder
 {
     public struct FeatureOptions
     {

@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Foundation.Core.StateMachineFeature.Abstraction;
-using Foundation.Core.StateMachineFeature.Exceptions;
-using Foundation.Core.StateMachineFeature.ViewModel;
 using Foundation.Core.ViewModel;
+using Foundation.StateMachineFeature.Abstraction;
+using Foundation.StateMachineFeature.Exceptions;
+using Foundation.StateMachineFeature.ViewModel;
 
-namespace Foundation.Core.StateMachineFeature.Services
+namespace Foundation.StateMachineFeature.Services
 {
     public abstract class BaseStateMachineService<TKey, TGraphEnum, TVertexEnum, TSubject, TRepository> :
         IStateMachineMetaService<TKey>, IStateMachineService<TKey, TGraphEnum, TVertexEnum, TSubject> where TKey : struct, IEquatable<TKey>

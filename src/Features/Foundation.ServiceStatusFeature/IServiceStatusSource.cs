@@ -1,4 +1,4 @@
-﻿namespace Foundation.Core.ServiceStatusFeature
+﻿namespace Foundation.ServiceStatusFeature
 {
     public interface IServiceStatusSource
     {

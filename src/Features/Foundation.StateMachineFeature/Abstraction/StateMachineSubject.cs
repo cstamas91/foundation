@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Foundation.Core.StateMachineFeature.Abstraction
+namespace Foundation.StateMachineFeature.Abstraction
 {
     public abstract class StateMachineSubject<TKey, TGraphEnum, TVertexEnum, TSubject> 
         where TKey : struct, IEquatable<TKey>

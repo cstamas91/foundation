@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Foundation.Core.ViewModel;
 
-namespace Foundation.Core.StateMachineFeature.ViewModel
+namespace Foundation.StateMachineFeature.ViewModel
 {
     public interface IStateMachineMetaService<TKey>
         where TKey : struct, IEquatable<TKey>

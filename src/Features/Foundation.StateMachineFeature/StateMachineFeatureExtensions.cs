@@ -1,8 +1,7 @@
-﻿using System;
-using Foundation.Core.StateMachineFeature.FeatureBuilder;
+﻿using Foundation.StateMachineFeature.FeatureBuilder;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Foundation.Core.StateMachineFeature
+namespace Foundation.StateMachineFeature
 {
     public static class StateMachineFeatureExtensions
     {

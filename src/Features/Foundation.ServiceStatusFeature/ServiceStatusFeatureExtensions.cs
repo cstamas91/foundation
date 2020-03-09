@@ -1,10 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc.ApplicationParts;
-using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Reflection;
+using Microsoft.AspNetCore.Mvc.ApplicationParts;
+using Microsoft.Extensions.DependencyInjection;
 
-namespace Foundation.Core.ServiceStatusFeature
+namespace Foundation.ServiceStatusFeature
 {
     internal static class ServiceStatusFeatureExtensions
     {
@@ -13,7 +12,7 @@ namespace Foundation.Core.ServiceStatusFeature
             var partManager = services.AddMvcCore()
                 .PartManager;
 
-            bool ImplementationSelector(TypeInfo t) => 
+            static bool ImplementationSelector(TypeInfo t) => 
                 t.ImplementedInterfaces.Contains(typeof(IServiceStatusSource));
 
             var serviceStatusSources = partManager.ApplicationParts

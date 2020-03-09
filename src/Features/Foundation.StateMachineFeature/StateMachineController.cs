@@ -1,8 +1,8 @@
 ﻿using System;
-using Foundation.Core.StateMachineFeature.ViewModel;
+using Foundation.StateMachineFeature.ViewModel;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Foundation.Core.StateMachineFeature
+namespace Foundation.StateMachineFeature
 {
     [Controller]
     public class StateMachineController<TKey, TSubject> : ControllerBase 

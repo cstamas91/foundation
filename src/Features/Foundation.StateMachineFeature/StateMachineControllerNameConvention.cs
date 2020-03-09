@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 
-namespace Foundation.Core.StateMachineFeature
+namespace Foundation.StateMachineFeature
 {
     public class StateMachineControllerNameConvention<TKey, TSubject> : IControllerModelConvention
         where TKey : struct, IEquatable<TKey>
