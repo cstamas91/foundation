@@ -31,7 +31,7 @@ steps:
     script: |
       $diffs = $(git diff --name-only) | ? { $_ -like "src/*" };
       If ('$(Build.Reason)' -ne 'Manual' -and !$diffs) {
-        Write-Host "##vso[task.setvariable variable=Continue;]true";
+        Write-Host "##vso[task.setvariable variable=Continue;]false";
       }
 
 - task: PowerShell@2
