@@ -30,11 +30,12 @@ steps:
     script: |
       $diffs = $(git diff --name-only) | ? { $_ -like "src/*" };
       If ('$(Build.Reason)' -ne 'Manual' -and !$diffs) {
-        Write-Host "##vso[task.complete result=Canceled;]DONE";
+        Write-Host "##vso[task.setvariable variable=Continue;]true";
       }
 
 - task: PowerShell@2
   displayName: 'Set version number'
+  condition: eq(variables['Continue'], true)
   inputs:
     targetType: inline
     script: |
@@ -43,8 +44,10 @@ steps:
       Write-Host "##vso[task.setvariable variable=nugetVersion;]$version";
 
 - task: NuGetToolInstaller@1
+  condition: eq(variables['Continue'], true)
 
 - task: DotNetCoreCLI@2
+  condition: eq(variables['Continue'], true)
   displayName: 'Build all projects'
   inputs:
     command: 'build'
@@ -52,6 +55,7 @@ steps:
     arguments: "--configuration $(buildConfiguration)"
 
 - task: DotNetCoreCLI@2
+  condition: eq(variables['Continue'], true)
   displayName: 'Pack all projects into nuget'
   inputs:
     command: 'pack'
@@ -60,6 +64,7 @@ steps:
     versionEnvVar: 'nugetVersion'
 
 - task: DotNetCoreCLI@2
+  condition: eq(variables['Continue'], true)
   displayName: 'Push packages to libs feed'
   inputs:
     command: 'push'
