@@ -21,6 +21,7 @@ variables:
   major: '0'
   minor: '1'
   Continue: false
+  nugetVersion: ''
 
 steps:
 - task: PowerShell@2
@@ -29,20 +30,28 @@ steps:
   inputs:
     targetType: inline
     script: |
-      $diffs = $(git diff --name-only) | ? { $_ -like "src/*" };
-      If ('$(Build.Reason)' -ne 'Manual' -and !$diffs) {
-        Write-Host "##vso[task.setvariable variable=Continue;]false";
+      function setVarAndLog ($var, $val) {
+        Write-Host "setting $var to $val";
+        Write-Host "##vso[task.setvariable variable=$var]$val";
       }
 
-- task: PowerShell@2
-  displayName: 'Set version number'
-  condition: eq(variables['Continue'], true)
-  inputs:
-    targetType: inline
-    script: |
-      $version = "$(major).$(minor).$(Build.BuildId)-CI-$(Build.BuildNumber)";
-      Write-Host "setting nugetVersion to $version";
-      Write-Host "##vso[task.setvariable variable=nugetVersion;]$version";
+      $diffs = $(git diff --name-only) | ? { $_ -like "src/*" };
+      $continue = if ($diffs) {$true} else {$false}
+      setVarAndLog "nugetVersion" "$(major).$(minor).$(Build.BuildId)-CI-$(Build.BuildNumber)"
+      switch -exact ('$(Build.Reason)') {
+        "Manual" {
+          setVarAndLog "Continue" true
+          Break;
+        }
+        { ("IndividualCI", "BatchedCI", "PullRequest") -contains $_ } {
+          setVarAndLog "Continue" $continue
+          Break;
+        }
+        Default {
+          setVarAndLog "Continue" false
+          Break;
+        }
+      }
 
 - task: NuGetToolInstaller@1
   condition: eq(variables['Continue'], true)
