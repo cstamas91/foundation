@@ -35,12 +35,13 @@ steps:
     script: |
       function setVarAndLog ($var, $val) {
         Write-Host "setting $var to $val";
-        Write-Host "##vso[task.setvariable variable=$var]$val";
+        Write-Host "##vso[task.setvariable variable=$var;]$val";
       }
-      
+
       $diffs = $(git diff --name-only) | ? { $_ -like "src/*" };
       If ('$(Build.Reason)' -ne 'Manual' -and !$diffs) {
         setVarAndLog "Agent.JobStatus" "Canceled"
+        Write-Host "##vso[task.complete result=Canceled;]DONE";
       }
 
       $ciBuilds = ("IndividualCI", "BatchedCI", "PullRequest");
