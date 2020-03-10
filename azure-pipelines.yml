@@ -38,7 +38,8 @@ steps:
         Write-Host "##vso[task.setvariable variable=$var]$val";
       }
       
-      If ('$(Build.Reason)' -ne 'Manual' -and !$(git diff --name-only) | ? { $_ -like "src/*" }) {
+      $diffs = $(git diff --name-only) | ? { $_ -like "src/*" };
+      If ('$(Build.Reason)' -ne 'Manual' -and !$diffs) {
         setVarAndLog "Agent.JobStatus" "Canceled"
       }
 
