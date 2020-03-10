@@ -30,6 +30,7 @@ variables:
 steps:
 - task: PowerShell@2
   displayName: 'Prerun'
+  continueOnError: false
   inputs:
     targetType: inline
     script: |
@@ -40,7 +41,7 @@ steps:
 
       $diffs = $(git diff --name-only) | ? { $_ -like "src/*" };
       If ('$(Build.Reason)' -ne 'Manual' -and !$diffs) {
-        Write-Host "##vso[job.complete result=Canceled;]DONE";
+        Write-Host "##vso[task.complete result=Failed;]DONE";
       }
 
       $ciBuilds = ("IndividualCI", "BatchedCI", "PullRequest");
