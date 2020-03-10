@@ -17,15 +17,9 @@ pool:
   vmImage: 'windows-latest'
 
 variables:
-  solution: '**/*.sln'
-  buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
   major: '0'
   minor: '1'
-  patch: '$(Build.BuildId)'
-  ciTag: 'CI-$(Build.BuildNumber)'
-  nugetVersion: ''
-  producePackage: ''
 
 steps:
 - task: PowerShell@2
@@ -34,23 +28,20 @@ steps:
   inputs:
     targetType: inline
     script: |
-      function setVarAndLog ($var, $val) {
-        Write-Host "setting $var to $val";
-        Write-Host "##vso[task.setvariable variable=$var;]$val";
-      }
-
       $diffs = $(git diff --name-only) | ? { $_ -like "src/*" };
       If ('$(Build.Reason)' -ne 'Manual' -and !$diffs) {
         Write-Host "##vso[task.complete result=Failed;]DONE";
       }
+      
+- task: PowerShell@2
+  displayName: 'Set version number'
+  inputs:
+    targetType: inline
+    script: |
+      $version = "$(major).$(minor).$(Build.BuildId)-CI-$(Build.BuildNumber)";
+      Write-Host "setting nugetVersion to $version";
+      Write-Host "##vso[task.setvariable variable=nugetVersion;]$version";
 
-      $ciBuilds = ("IndividualCI", "BatchedCI", "PullRequest");
-      $producePackage = $ciBuilds -contains '$(Build.Reason)';
-      setVarAndLog "producePackage" $producePackage;
-      if ($producePackage) {
-        setVarAndLog "nugetVersion" "$(major).$(minor).$(patch)-$(ciTag)";
-      }
-    
 - task: NuGetToolInstaller@1
 
 - task: DotNetCoreCLI@2
@@ -60,9 +51,8 @@ steps:
     projects: '**/*.csproj'
     arguments: "--configuration $(buildConfiguration)"
 
-- task: NuGetCommand@2
+- task: DotNetCoreCLI@2
   displayName: 'Pack all projects into nuget'
-  condition: eq(variables.producePackage, 'true')
   inputs:
     command: 'pack'
     packagesToPack: '**/*.csproj'
@@ -71,7 +61,6 @@ steps:
 
 - task: DotNetCoreCLI@2
   displayName: 'Push packages to libs feed'
-  condition: eq(variables.producePackage, 'true')
   inputs:
     command: 'push'
     packagesToPush: '$(Build.ArtifactStagingDirectory)/*.nupkg'
