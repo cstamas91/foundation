@@ -28,18 +28,8 @@ variables:
   producePackage: ''
 
 steps:
-- task: NuGetToolInstaller@1
-
-- task: DotNetCoreCLI@2
-  displayName: 'Build all projects'
-  inputs:
-    command: 'build'
-    projects: '**/*.csproj'
-    workingDirectory: '$(System.DefaultWorkingDirectory)'
-    arguments: "--configuration $(buildConfiguration)"
-
 - task: PowerShell@2
-  displayName: 'Write control variables'
+  displayName: 'Prerun'
   inputs:
     targetType: inline
     script: |
@@ -47,20 +37,26 @@ steps:
         Write-Host "setting $var to $val";
         Write-Host "##vso[task.setvariable variable=$var]$val";
       }
-
-      $ciBuilds = ("IndividualCI", "BatchedCI", "PullRequest");
-      switch -Exact ('$(Build.Reason)') {
-        { $ciBuilds -contains $_ } {
-          setVarAndLog "nugetVersion" "$(major).$(minor).$(patch)-$(ciTag)";
-          setVarAndLog "producePackage" "true";
-        }
-
-        Default {
-          setVarAndLog "nugetVersion" "";
-          setVarAndLog "producePackage" "false";
-        }
+      
+      If ('$(Build.Reason)' -ne 'Manual' -and !$(git diff --name-only) | ? { $_ -like "src/*" }) {
+        setVarAndLog "Agent.JobStatus" "Canceled"
       }
 
+      $ciBuilds = ("IndividualCI", "BatchedCI", "PullRequest");
+      $producePackage = $ciBuilds -contains '$(Build.Reason)';
+      setVarAndLog "producePackage" $producePackage;
+      if ($producePackage) {
+        setVarAndLog "nugetVersion" "$(major).$(minor).$(patch)-$(ciTag)";
+      }
+    
+- task: NuGetToolInstaller@1
+
+- task: DotNetCoreCLI@2
+  displayName: 'Build all projects'
+  inputs:
+    command: 'build'
+    projects: '**/*.csproj'
+    arguments: "--configuration $(buildConfiguration)"
 
 - task: NuGetCommand@2
   displayName: 'Pack all projects into nuget'
