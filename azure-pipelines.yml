@@ -30,9 +30,9 @@ steps:
     script: |
       $diffs = $(git diff --name-only) | ? { $_ -like "src/*" };
       If ('$(Build.Reason)' -ne 'Manual' -and !$diffs) {
-        Write-Host "##vso[task.complete result=Failed;]DONE";
+        Write-Host "##vso[task.complete result=Canceled;]DONE";
       }
-      
+
 - task: PowerShell@2
   displayName: 'Set version number'
   inputs:
