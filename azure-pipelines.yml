@@ -40,8 +40,7 @@ steps:
 
       $diffs = $(git diff --name-only) | ? { $_ -like "src/*" };
       If ('$(Build.Reason)' -ne 'Manual' -and !$diffs) {
-        setVarAndLog "Agent.JobStatus" "Canceled"
-        Write-Host "##vso[task.complete result=Canceled;]DONE";
+        Write-Host "##vso[job.complete result=Canceled;]DONE";
       }
 
       $ciBuilds = ("IndividualCI", "BatchedCI", "PullRequest");
